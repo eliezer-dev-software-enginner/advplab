@@ -7,6 +7,8 @@
 
 ## Foco atual
 
+- [ ] Avaliar geração opcional de colunas calculadas no browse, já disponível no Protheus Mega Brain; proposta e critérios em [proposta-geracao-colunas-browse.md](proposta-geracao-colunas-browse.md) (05/11/2026).
+
 - [x] Atualizar identidade e pastas do README para AdvPLab/advplab, preservando URL real do remoto e nomes legados de fixtures apenas como compatibilidade (05/11/2026).
 
 - [x] Documentar instalação conjunta com os dois git clones, destino livrePL explícito e instalação editável do AdvPLab (05/11/2026).
