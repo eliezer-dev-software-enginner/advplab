@@ -44,6 +44,7 @@
 ### TRNSOL01 headless
 
 - [x] Suportar `SetFields` com colunas calculadas e preservar area/posicao na renderizacao (05/10/2026).
+- [x] Implementar `Posicione` sobre aliases e indices do fixture para colunas calculadas do browse (05/11/2026).
 
 - [x] Validar o fonte real e as dependencias locais.
 - [x] Executar browse, menu, modelo/view, envio, aprovacao, rejeicao, processamento e cancelamento.

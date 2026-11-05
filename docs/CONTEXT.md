@@ -59,6 +59,8 @@ parser + FixtureInterpreter do LivrePL
 
 O browse headless aceita `SetFields` com colunas calculadas por code blocks. A exibicao textual avalia cada bloco no registro correspondente, conserva as colunas existentes e restaura alias/posicao. Mascara e visibilidade SX3 nao sao simuladas (ADR-043).
 
+`Posicione(cAlias, nOrdem, cChave, cCampo)` participa da validacao e da execucao headless. Ele pesquisa os registros pela ordem declarada em `indices`, restaura a area corrente e permite que colunas calculadas resolvam descricoes em tabelas simuladas como a SB1. Nao consulta o dicionario nem o banco real.
+
 Os utilitarios gerais sao herdados do LivrePL (ADR-044). Date/Time e arquivos possuem overrides deterministas. DDATABASE e campos D usam AdvPLDate em memoria; o estado persistido serializa datas como ISO/null e restaura o tipo na leitura.
 
 O adaptador de comandos suporta `PREPARE ENVIRONMENT EMPRESA ... FILIAL ...` e `RESET ENVIRONMENT` com estado local ao runtime. No EX1 de banco, `Date()` consulta `DDATABASE` deterministico e `xFilial()` pode usar a area corrente. `--persist` carrega e salva os registros em `state.json`, separado do fixture imutavel `mock.jsonc`; inclui escritas por `RecLock` e MVC1. Sem a opcao, tudo continua somente em memoria (ADR-032).

@@ -1645,6 +1645,51 @@ class FixtureInterpreter(Interpreter):
                 return records[0][field]
             return self._prepared_branch or "01"
 
+        def b_posicione(args):
+            if len(args) != 4:
+                raise AdvPLRuntimeError(
+                    "Posicione espera alias, ordem, chave e campo"
+                )
+            alias_name, order, key, field = args
+            if not isinstance(alias_name, str) or not alias_name:
+                raise AdvPLRuntimeError("Posicione espera alias textual")
+            if isinstance(order, bool) or not isinstance(order, (int, float)):
+                raise AdvPLRuntimeError("Posicione espera ordem numerica")
+            if int(order) != order or int(order) < 1:
+                raise AdvPLRuntimeError("Posicione espera ordem inteira positiva")
+            if not isinstance(field, str) or not field:
+                raise AdvPLRuntimeError("Posicione espera campo textual")
+
+            alias_name = alias_name.upper()
+            field = field.upper()
+            alias = self._get_alias(alias_name)
+            table = self.fixture.tabelas.get(alias_name, {})
+            declared_fields = {
+                str(item.get("nome", "")).upper()
+                for item in table.get("campos", [])
+                if isinstance(item, dict)
+            } if isinstance(table, dict) else set()
+            record_fields = {
+                str(name).upper()
+                for record in alias.records if isinstance(record, dict)
+                for name in record
+            }
+            if field not in declared_fields | record_fields:
+                raise AdvPLRuntimeError(
+                    f"Posicione: campo '{field}' nao existe no alias '{alias_name}'"
+                )
+
+            previous_alias = self._current_alias
+            self._current_alias = alias_name
+            try:
+                alias.set_order(int(order))
+                if not b_dbseek([key]):
+                    return ""
+                value = alias.field(field)
+                return "" if value is None else value
+            finally:
+                self._current_alias = previous_alias
+
         def b_prepare_environment(args):
             if len(args) != 2 or not all(isinstance(value, str) and value for value in args):
                 raise AdvPLRuntimeError("PREPARE ENVIRONMENT espera EMPRESA e FILIAL como texto nao vazio")
@@ -1902,6 +1947,7 @@ class FixtureInterpreter(Interpreter):
         builtins["MSUNLOCK"] = b_msunlock
         builtins["RETSQLNAME"] = b_retsqlname
         builtins["XFILIAL"] = b_xfilial
+        builtins["POSICIONE"] = b_posicione
         builtins["TESTLABPREPAREENVIRONMENT"] = b_prepare_environment
         builtins["TESTLABRESETENVIRONMENT"] = b_reset_environment
         builtins["ALERT"] = b_alert

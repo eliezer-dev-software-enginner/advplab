@@ -256,6 +256,30 @@ advplab --preview examples/preview-browse.prw --fixture fixtures/preview-browse.
 
 Titulos das colunas usam AddColumn/SetFields do fonte ou `titulo`, `descricao`, `nome` dos campos no mock, nessa prioridade. `visivel: false` oculta um campo automatico. O resultado e uma aproximacao textual; nao reproduz layout, cores, botoes interativos, permissao de acesso ou o dicionario SX3 real. Consulte [detalhes e limites](docs/fase-preview-browse.md).
 
+Colunas calculadas podem consultar outra tabela simulada com `Posicione()`. A tabela precisa declarar os campos e o indice usado no `mock.jsonc`:
+
+```jsonc
+{
+  "SB1": {
+    "campos": [
+      {"nome": "B1_FILIAL", "tipo": "C"},
+      {"nome": "B1_COD", "tipo": "C"},
+      {"nome": "B1_DESC", "tipo": "C"}
+    ],
+    "indices": {"1": ["B1_FILIAL", "B1_COD"]},
+    "registros": [
+      {"B1_FILIAL": "01", "B1_COD": "PROD1", "B1_DESC": "Produto de teste"}
+    ]
+  }
+}
+```
+
+```advpl
+Posicione("SB1", 1, xFilial("SB1") + ZA4->ZA4_PROD, "B1_DESC")
+```
+
+Na simulacao, `Posicione` usa a ordem declarada em `indices`, devolve texto vazio quando a chave nao existe e gera erro claro para alias, ordem ou campo invalidos. A area corrente e restaurada depois da consulta; o alias pesquisado permanece posicionado no registro encontrado.
+
 ### Compilacao real recursiva no RPO (opcional)
 
 `-validate` e `-run` continuam **locais e headless**. Para recompilar no RPO conectado ao AppServer, use `-compile`. Essa opcao chama o `advpls`/`advpls.exe` do [TDS-CLI oficial](https://github.com/totvs/tds-ls/blob/master/TDS-CLi.md); ela nao simula a tecla Ctrl+F9 e nunca roda implicitamente. O AdvPLab procura o executavel no `PATH` ou na extensao TOTVS do VS Code; se necessario, informe `--tds-cli`.
