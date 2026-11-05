@@ -22,9 +22,23 @@ INIT_FIXTURE = """{
   // Tabelas, campos e registros simulados.
   "tabelas": [],
   // Retornos simulados de funcoes.
-  "funcoes": [],
+  "funcoes": [
+    {
+      "FwGetUserName": "Usuario Teste"
+    }
+  ],
   // Variaveis do ambiente, como DDATABASE e TIME.
-  "ambiente": [],
+  "ambiente": [
+    {
+      "DDATABASE": "2026-01-01"
+    },
+    {
+      "TIME": "12:00:00"
+    },
+    {
+      "CUSERLOCAL": "."
+    }
+  ],
   // Respostas de dialogos simulados.
   "dialogos": [],
   // Configuracoes especificas por fonte PRW.

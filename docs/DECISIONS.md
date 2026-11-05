@@ -427,3 +427,11 @@
 - **Documentacao:** Mudancas novas atualizam `docs/`. O README permanece uma entrada publica e portatil; detalhes de implementacao, decisoes, caminhos locais, tokens e configuracao da maquina ficam fora dele.
 - **Limite:** O CI nao conecta ao VS Code, TDS, AppServer ou RPO e nao comprova compilacao real.
 - **Validacao local:** Skill aprovada pelo validador do Codex, workflow lido como YAML e 160 testes executados em ambiente virtual com instalacoes editaveis de AdvPLab e LivrePL.
+
+## ADR-056 — Metadados locais nos mocks gerados
+
+- **Data:** 05/11/2026
+- **Contexto:** Projetos reais repetem valores de usuario, data, hora e diretorio para validar fontes sem conexao com o Protheus. Um mock novo com essas secoes vazias produz erros evitaveis, como funcao externa desconhecida ao usar `FwGetUserName`.
+- **Decisao:** `--init` e `--mvc1` passam a gerar `FwGetUserName` em `funcoes` e `DDATABASE`, `TIME` e `CUSERLOCAL` em `ambiente`, com valores locais deterministas e substituiveis. A geracao nao le usuario autenticado, relogio, diretorios ou servidores da maquina.
+- **Limite:** `UsrRetMail`, SMTP, respostas de dialogo, `PARAMIXB`, `AHEADER`, `ACOLS` e resultados de bloqueio permanecem fora do padrao porque sua forma ou resultado depende do fonte e do cenario.
+- **Validacao:** Testes de `--init` executam um fonte que chama `FwGetUserName`; testes do scaffold MVC1 verificam os quatro valores gerados. A suite completa e a geracao real em diretorio temporario fecham a validacao.

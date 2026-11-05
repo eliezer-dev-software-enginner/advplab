@@ -7,6 +7,8 @@
 
 ## Foco atual
 
+- [x] Incluir `FwGetUserName`, `DDATABASE`, `TIME` e `CUSERLOCAL` como metadados locais deterministas nos mocks gerados por `--init` e `--mvc1`, documentando os metadados excluidos por dependerem do projeto (05/11/2026).
+
 - [x] Adicionar workflow de pull request autocontido, skill propria do AdvPLab e politica de documentacao que separa README publico de detalhes tecnicos e locais (05/11/2026).
 
 - [x] Embutir a skill `monasteiro`, `AGENTS.md` e `.gitignore` nos projetos MVC1 novos, com instalacao documentada e exclusao dos artefatos `.vscode/.advpl/` e `.vscode/advpl/` (05/11/2026).

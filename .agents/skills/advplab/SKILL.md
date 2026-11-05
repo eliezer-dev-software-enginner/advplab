@@ -23,6 +23,7 @@ Antes de implementar, classifique a mudança:
 2. Preserve alterações existentes e confirme o caminho real do repositório.
 3. Reproduza o caso com fonte e fixture próprios do AdvPLab. A suíte deste repositório não deve depender de fontes locais externos.
 4. Mantenha as sete seções canônicas dos fixtures JSONC: `parametros`, `tabelas`, `funcoes`, `ambiente`, `dialogos`, `especificidadesPrw` e `consultas`.
+   Nos mocks gerados, preserve os exemplos de `FwGetUserName`, `DDATABASE`, `TIME` e `CUSERLOCAL` ou ajuste seus valores ao cenário. Eles são dados locais determinísticos, não dados obtidos do Protheus.
 5. Adicione ou ajuste um teste que observe o comportamento, evitando testes que apenas repitam a implementação.
 6. Execute `python -m unittest discover -s tests -v` e o menor comando CLI que demonstre a mudança.
 7. Atualize a documentação segundo a política abaixo e revise o diff antes de concluir.

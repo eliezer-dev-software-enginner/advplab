@@ -36,6 +36,10 @@ class Mvc1ScaffoldTests(unittest.TestCase):
         self.assertIn("// Campos de exemplo", config.read_text())
         fixture = Fixture.from_file(config)
         self.assertIn('ZA4', fixture.tabelas)
+        self.assertEqual('Usuario Teste', fixture.get_function_result('FwGetUserName'))
+        self.assertEqual('2026-01-01', fixture.get_environment('DDATABASE'))
+        self.assertEqual('12:00:00', fixture.get_environment('TIME'))
+        self.assertEqual('.', fixture.get_environment('CUSERLOCAL'))
         self.assertEqual(4, validate_file(source))
         with contextlib.redirect_stdout(io.StringIO()):
             execute_file(source)

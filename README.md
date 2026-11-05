@@ -126,7 +126,7 @@ Abra o terminal na pasta do seu projeto AdvPL e execute:
 advplab --init
 ```
 
-O comando cria `mock.jsonc` na pasta atual com comentarios e as sete secoes basicas vazias. Preencha os dados simulados usados pelos seus fontes e execute:
+O comando cria `mock.jsonc` na pasta atual com comentarios e as sete secoes basicas. O arquivo ja traz valores locais de exemplo para `FwGetUserName`, `DDATABASE`, `TIME` e `CUSERLOCAL`; ajuste-os ao cenario testado. Esses valores sao deterministas e nao consultam o usuario, relogio ou diretorio do Protheus real. Preencha os demais dados simulados usados pelos seus fontes e execute:
 
 ```powershell
 advplab -run rotina.prw
@@ -142,7 +142,7 @@ Na pasta em que deseja criar os arquivos, execute:
 advplab --mvc1 --table ZA4
 ```
 
-Cria o subdiretorio `Fontes` automaticamente, se necessario. Gera `Fontes/ZA4MVC.prw` com browse, MenuDef, ModelDef e ViewDef; `mock.jsonc` com a tabela simulada e o cenario `incluir-registro`; `README.md`; `AGENTS.md`; `.gitignore`; e a skill `.agents/skills/monasteiro/SKILL.md`. A skill orienta agentes sobre fontes, fixtures, MVC, browse, validacao local e compilacao, com padroes extraidos dos projetos usados como corpus pelo AdvPLab. O README gerado ensina a copia-la para `~/.codex/skills/monasteiro`. `--table` e opcional: `advplab --mvc1` usa ZA1. Aliases devem ter tres caracteres alfanumericos e comecar com letra; minusculas sao convertidas para maiusculas.
+Cria o subdiretorio `Fontes` automaticamente, se necessario. Gera `Fontes/ZA4MVC.prw` com browse, MenuDef, ModelDef e ViewDef; `mock.jsonc` com a tabela simulada, o cenario `incluir-registro` e os mesmos valores locais de exemplo de `--init`; `README.md`; `AGENTS.md`; `.gitignore`; e a skill `.agents/skills/monasteiro/SKILL.md`. A skill orienta agentes sobre fontes, fixtures, MVC, browse, validacao local e compilacao, com padroes extraidos dos projetos usados como corpus pelo AdvPLab. O README gerado ensina a copia-la para `~/.codex/skills/monasteiro`. `--table` e opcional: `advplab --mvc1` usa ZA1. Aliases devem ter tres caracteres alfanumericos e comecar com letra; minusculas sao convertidas para maiusculas.
 
 ```bash
 advplab -validate Fontes/ZA4MVC.prw

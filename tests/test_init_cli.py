@@ -26,9 +26,20 @@ class InitCliTests(unittest.TestCase):
                     'parametros', 'tabelas', 'funcoes', 'ambiente',
                     'dialogos', 'especificidadesPrw', 'consultas',
                 }, set(Fixture.read_data(path)))
-                Fixture.from_file(path)
-                Path('rotina.prw').write_text('User Function Rotina()\nReturn NIL\n')
-                self.assertEqual(0, main(['-run', 'rotina.prw']))
+                fixture = Fixture.from_file(path)
+                self.assertEqual('Usuario Teste', fixture.get_function_result('FwGetUserName'))
+                self.assertEqual('2026-01-01', fixture.get_environment('DDATABASE'))
+                self.assertEqual('12:00:00', fixture.get_environment('TIME'))
+                self.assertEqual('.', fixture.get_environment('CUSERLOCAL'))
+                Path('rotina.prw').write_text(
+                    'User Function Rotina()\n'
+                    '    ? FwGetUserName("000001")\n'
+                    'Return NIL\n'
+                )
+                output = io.StringIO()
+                with contextlib.redirect_stdout(output):
+                    self.assertEqual(0, main(['-run', 'rotina.prw']))
+                self.assertEqual('Usuario Teste\n', output.getvalue())
             finally:
                 os.chdir(previous)
 

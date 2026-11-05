@@ -64,6 +64,8 @@ README.md
 
 O fonte inclui browse, MenuDef, ModelDef e ViewDef para um cadastro de uma tabela.
 `mock.jsonc` define os dados simulados e aceita comentarios.
+Ele inclui valores locais de exemplo para `FwGetUserName`, `DDATABASE`, `TIME` e
+`CUSERLOCAL`. Ajuste-os ao cenario do teste; eles nao consultam o Protheus real.
 
 ## Executar localmente
 
@@ -168,6 +170,8 @@ entrada usados como corpus do AdvPLab.
 - Para `DbSetOrder`, `DbSeek` ou `Posicione`, declare `indices` na mesma ordem da chave real.
 - Para funcoes externas sem integracao local, configure retornos deterministas em `funcoes`
   ou `especificidadesPrw`; nao invente acesso a servidor, SMTP ou banco.
+- `FwGetUserName`, `DDATABASE`, `TIME` e `CUSERLOCAL` ja possuem valores locais de exemplo.
+  Ajuste-os ao caso testado; nao os trate como dados do usuario ou do ambiente Protheus.
 - Datas do mock usam `AAAA-MM-DD`. A persistencia opcional vai para `state.json`; o mock
   original nao deve ser reescrito pela execucao.
 
@@ -313,7 +317,13 @@ def create_mvc1(table='ZA1', legendas=False):
             'campos': [{'nome': field, 'tipo': 'C'} for field in record],
             'registros': [],
         }}],
-        'funcoes': [], 'ambiente': [], 'dialogos': [],
+        'funcoes': [{'FwGetUserName': 'Usuario Teste'}],
+        'ambiente': [
+            {'DDATABASE': '2026-01-01'},
+            {'TIME': '12:00:00'},
+            {'CUSERLOCAL': '.'},
+        ],
+        'dialogos': [],
         'especificidadesPrw': [], 'consultas': [],
         'cenariosMvc': [{
             'nome': 'incluir-registro', 'operacao': 'incluir',
@@ -324,8 +334,8 @@ def create_mvc1(table='ZA1', legendas=False):
     comments = {
         'parametros': 'Valores consultados por GetMV().',
         'tabelas': 'Campos de exemplo: ajuste ao SX3 da tabela real.',
-        'funcoes': 'Retornos simulados de funcoes.',
-        'ambiente': 'Variaveis do ambiente, como DDATABASE e TIME.',
+        'funcoes': 'Retornos simulados de funcoes; ajuste ao cenario local.',
+        'ambiente': 'Data, hora e diretorio deterministas; nao representam o Protheus real.',
         'dialogos': 'Respostas de dialogos simulados.',
         'especificidadesPrw': 'Configuracoes especificas por fonte PRW.',
         'consultas': 'Resultados simulados de consultas.',
