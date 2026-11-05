@@ -7,6 +7,8 @@
 
 ## Foco atual
 
+- [x] Adicionar workflow de pull request autocontido, skill propria do AdvPLab e politica de documentacao que separa README publico de detalhes tecnicos e locais (05/11/2026).
+
 - [x] Embutir a skill `monasteiro`, `AGENTS.md` e `.gitignore` nos projetos MVC1 novos, com instalacao documentada e exclusao dos artefatos `.vscode/.advpl/` e `.vscode/advpl/` (05/11/2026).
 
 - [ ] Avaliar geração opcional de colunas calculadas no browse, já disponível no Protheus Mega Brain; proposta e critérios em [proposta-geracao-colunas-browse.md](proposta-geracao-colunas-browse.md) (05/11/2026).
@@ -215,8 +217,8 @@ Status: `[x]` — concluido em 21/09/2026.
 - [ ] Avaliar empacotamento ou configuracao explicita do caminho do LivrePL sem quebrar o uso atual por diretorios irmaos.
 - [ ] Generalizar objetos `FWExecStatement`/`FWBrowse` no runtime, removendo a deteccao especializada quando houver cobertura equivalente.
 - [ ] Aplicar filtros da consulta simulada sobre Z04/Z05 em vez de usar resultados precomputados.
-- [ ] Adicionar CI quando houver repositorio remoto configurado.
-- [ ] Manter README, CONTEXT e DECISIONS sincronizados com cada fase.
+- [x] Adicionar CI de pull request com checkout explicito do LivrePL e matriz Python 3.10/3.12 (05/11/2026).
+- [x] Definir politica permanente para manter README publico e registrar implementacao, decisoes e conteudo local em docs (05/11/2026).
 - [ ] Cobrir validacoes antecipadas de `U_EnviarEmailSolicitacao()` com `At` e `Left`, sem simular SMTP.
 
 ---

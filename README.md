@@ -298,9 +298,7 @@ Por padrao, conecte e autentique o servidor no VS Code e execute:
 advplab -compile Fontes/ZA4MVC.prw
 ```
 
-O comando le `~/.totvsls/servers.json` usando a pasta pessoal do usuario atual, seleciona `connectedServer`, reutiliza o token da sessao/ambiente e os includes desse servidor (ou os includes globais). Nao precisa informar usuario, senha ou `--tds-config`. `--include` substitui os includes salvos; caminhos relativos e `${workspaceFolder}` sao resolvidos pela pasta atual do terminal.
-
-O binario `advpls` e localizado conforme Linux, Windows ou macOS. O modo padrao usa LSP: inicializa o processo local, solicita reconexao com o token e envia a compilacao. Token ausente/recusado exige reconectar pelo VS Code; ambiente retornado diferente bloqueia o envio. O arquivo servers.json nao e alterado e os tokens nao sao gravados em arquivos temporarios nem argumentos de processo. A compilacao real no Linux foi confirmada pelo usuario em 28/10/2026: `advplab -compile Fontes/ZA4MVC.prw` retornou `[OK] 1 fonte(s) recompilado(s) no RPO` no projeto controle-patrimonio, sem `--tds-config`; veja [evidencias e limites](docs/fase-compilacao-rpo.md).
+O comando usa a conexao Protheus salva pelo VS Code para o usuario atual. Nao precisa informar usuario, senha ou `--tds-config`. Se a sessao nao estiver disponivel, reconecte o servidor no VS Code. `--include` permite substituir os includes salvos. O AdvPLab nao altera a configuracao do VS Code. O desenho tecnico, a evidencia de compilacao e os limites ficam em [Compilacao recursiva no RPO](docs/fase-compilacao-rpo.md).
 
 Como alternativa, para compilar com autenticacao explicita, crie **fora do repositorio** um arquivo privado `tds-auth.ini` em CP1252 com sua conexao real (nao compartilhe nem versione usuario, senha ou token):
 
@@ -322,7 +320,7 @@ Se sua instalacao exigir token de compilacao, acrescente uma secao `[authorizati
 advplab -compile TRNSOL01.prw --tds-config 'C:\caminho-privado\tds-auth.ini' --include 'C:\caminho\includes'
 ```
 
-O AdvPLab gera uma lista temporaria em CP1252 com cada `.prw` do grafo `//usePrw` uma vez, por padrao com dependencias antes dos chamadores, e manda o TDS-CLI recompilar os cinco fontes de `TRNSOL01.prw` em uma invocacao. A lista e o script temporarios sao removidos ao final; o arquivo privado original nao e modificado. Isso exige acesso ao AppServer, autenticacao, includes corretos e permissao de compilacao/acesso exclusivo ao RPO, conforme a [documentacao TDS-VSCode](https://github.com/totvs/tds-vscode/blob/master/docs/compilation.md). Nao reutiliza automaticamente a sessao autenticada do VS Code.
+O AdvPLab compila o grafo `//usePrw` com dependencias antes dos chamadores. Isso exige acesso ao AppServer, autenticacao, includes corretos e permissao de compilacao/acesso exclusivo ao RPO, conforme a [documentacao TDS-VSCode](https://github.com/totvs/tds-vscode/blob/master/docs/compilation.md).
 
 Quando funcoes foram movidas entre fontes e o RPO ainda guarda os simbolos antigos, informe a ordem completa explicitamente. Por exemplo, para liberar as antigas `U_Z04*` de `TRNSOL01.prw` antes de compilar `OUACOES.prw`:
 
@@ -330,7 +328,7 @@ Quando funcoes foram movidas entre fontes e o RPO ainda guarda os simbolos antig
 advplab -compile TRNSOL01.prw --dry-run --compile-order 'ENVEMAIL.prw,NOTIFSOL.prw,UTILS.prw,TRNSOL01.prw,OUACOES.prw'
 ```
 
-Repita com `--tds-config` e `--include` sem `--dry-run` para compilar nessa ordem. A ordem deve listar todos os fontes descobertos exatamente uma vez. Erros do TDS-CLI retornam codigo de saida nao zero; o AdvPLab nao exclui objetos do RPO automaticamente. A integracao real com o seu AppServer ainda nao foi testada aqui, apenas o plano e a chamada simulada ao TDS-CLI.
+Repita com `--tds-config` e `--include` sem `--dry-run` para compilar nessa ordem. A ordem deve listar todos os fontes descobertos exatamente uma vez. Erros do TDS-CLI retornam codigo de saida nao zero; o AdvPLab nao exclui objetos do RPO automaticamente.
 
 Para validar todas as funções do arquivo sem executar nenhuma delas:
 
@@ -655,6 +653,7 @@ O SQL é montado e seus parâmetros são vinculados pela lógica original, mas n
 - `docs/corpus-desafio1-context-map.md`: inventario e priorizacao do corpus real.
 - `docs/fase-ui-headless.md`: mensagens e confirmacoes sem interface.
 - `docs/fase-trnsol02-integral.md`: validacao e execucao das tres funcoes do primeiro fonte real.
+- `docs/contributing.md`: workflow de pull request, skill do AdvPLab e politica de documentacao.
 
 ## Decisao de erro do GetMV
 

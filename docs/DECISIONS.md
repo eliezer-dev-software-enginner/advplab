@@ -418,3 +418,12 @@
 - **Contexto:** Projetos novos precisam orientar agentes com os padroes AdvPL ja comprovados e evitar que artefatos binarios da extensao sejam versionados.
 - **Decisao:** `--mvc1` gera `.agents/skills/monasteiro/SKILL.md`, `AGENTS.md` e `.gitignore` junto dos artefatos existentes. A skill cobre fonte/mock sincronizados, indices, `Posicione`, `SetFields`, dependencias `usePrw`, encoding, validacao, preview, cenarios e compilacao. O README gerado ensina a instalacao em `~/.codex/skills/monasteiro`. O `.gitignore` exclui `state.json`, `.vscode/.advpl/` e `.vscode/advpl/`, sem ignorar toda a pasta `.vscode`.
 - **Consequencias:** O projeto funciona com a orientacao local mesmo sem instalacao global. Conflitos em qualquer arquivo novo interrompem a geracao antes da escrita; falhas removem apenas artefatos e diretorios criados pelo comando.
+
+## ADR-055 — CI de pull request e skill do AdvPLab
+
+- **Data:** 05/11/2026
+- **Contexto:** A suite depende da base de linguagem do LivrePL, mas um runner limpo nao possui o checkout irmao existente na maquina de desenvolvimento. Agentes tambem precisam distinguir recursos da linguagem de simulacoes Protheus.
+- **Decisao:** Pull requests fazem checkout explicito de AdvPLab e LivrePL, instalam ambos em modo editavel e executam a suite propria em Python 3.10 e 3.12. A skill `.agents/skills/advplab/SKILL.md` e `AGENTS.md` registram o limite arquitetural, o fluxo de validacao e a politica de documentacao.
+- **Documentacao:** Mudancas novas atualizam `docs/`. O README permanece uma entrada publica e portatil; detalhes de implementacao, decisoes, caminhos locais, tokens e configuracao da maquina ficam fora dele.
+- **Limite:** O CI nao conecta ao VS Code, TDS, AppServer ou RPO e nao comprova compilacao real.
+- **Validacao local:** Skill aprovada pelo validador do Codex, workflow lido como YAML e 160 testes executados em ambiente virtual com instalacoes editaveis de AdvPLab e LivrePL.

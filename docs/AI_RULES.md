@@ -67,6 +67,8 @@ Para toda mudanca de comportamento:
 - `TODO.md` e a fonte de verdade das proximas entregas.
 - `DECISIONS.md` registra decisoes de arquitetura em formato ADR; decisoes aceitas nao devem ser refeitas sem justificativa.
 - `PROMPT.md` preserva o objetivo original e o roteiro de retomada.
+- Toda mudanca nova deve atualizar a documentacao pertinente em `docs/`.
+- O README e a entrada publica para instalacao e uso. Detalhes internos de implementacao, decisoes, migracoes, caminhos absolutos, tokens e configuracoes exclusivas da maquina devem ficar em `docs/`, `AGENTS.md` ou documentacao de contribuicao.
 
 ## 7. Git
 

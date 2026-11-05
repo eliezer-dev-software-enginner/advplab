@@ -13,6 +13,7 @@
 | `docs/TODO.md` | Roadmap e pendencias por fase |
 | `docs/DECISIONS.md` | Decisoes de arquitetura em formato ADR |
 | `docs/PROMPT.md` | Objetivo mestre e roteiro de bootstrap |
+| `docs/contributing.md` | Pull requests, skill do projeto e politica de documentacao |
 | `docs/fase-0-levantamento.md` | Levantamento e desenho inicial |
 | `docs/fase-1-getmv.md` | Implementacao e evidencia do `GetMV` |
 | `docs/fase-1b-casos-reais.md` | Casos reais `U_SolMailCfg` e `TextoHtml` |
@@ -91,6 +92,14 @@ IDs literais de `GetValue('SUBMODELO', 'CAMPO')` tambem sao comparados aos IDs d
 | `tests/test_getmv.py` | Testes unitarios e ponta a ponta da Fase 1 |
 | `desafios-aprendizado/tests/test_real_cases.py` | Testes de integracao do desafio1-solicitacao-compra, fora da suite propria do TestLab |
 | `docs/` | Memoria permanente e documentos de fase |
+
+## Pull requests e skill do projeto
+
+O workflow `.github/workflows/pull-request.yml` cria checkouts irmaos limpos de AdvPLab e LivrePL e executa a suite propria em Python 3.10 e 3.12. Isso evita depender do checkout, ambiente virtual, token ou configuracao do computador do autor. Integracoes reais com TDS, AppServer e RPO permanecem fora do CI.
+
+A skill `.agents/skills/advplab/SKILL.md` orienta agentes sobre o limite arquitetural com o LivrePL, fixtures, validacao e documentacao. `AGENTS.md` torna essas regras descobriveis no repositorio. Instrucoes de instalacao e contribuicao ficam em `docs/contributing.md`.
+
+Mudancas novas atualizam `docs/CONTEXT.md`, `docs/DECISIONS.md`, `docs/TODO.md` e documentos especificos conforme o impacto. O README fica reservado a informacao publica e portatil de instalacao, uso e comportamento observavel; detalhes de implementacao e conteudo local da maquina nao devem ser adicionados a ele.
 
 ## Formato atual do fixture
 
