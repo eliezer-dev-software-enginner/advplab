@@ -7,6 +7,8 @@
 
 ## Foco atual
 
+- [x] Documentar instalação conjunta com os dois git clones, destino livrePL explícito e instalação editável do AdvPLab (05/11/2026).
+
 - [x] Adicionar --preview do browse no terminal com titulo, acoes, colunas e dados do mock (28/10/2026).
 
 - [x] Implementar compilacao usando sessao salva do VS Code com testes de protocolo e configuracao (27/10/2026).

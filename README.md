@@ -53,6 +53,7 @@ protheus/
 
 ## Pré-requisitos
 
+- Git disponível no terminal para baixar os dois repositórios.
 - Python 3.10 ou mais recente disponível no terminal.
 - O repositório `livrePL` em um diretório irmão deste projeto.
 - Para executar um fonte, um arquivo `mock.jsonc` no projeto testado, ou seu caminho informado por `--fixture`. `--init` cria um fixture inicial; os exemplos deste repositório usam os arquivos em `fixtures/`.
@@ -72,10 +73,18 @@ Não são necessários AppServer, SmartClient, licença Protheus ou banco de dad
 
 ## Instalar a CLI
 
+Na pasta onde deseja guardar os projetos, copie e execute o bloco abaixo para baixar os dois repositórios como pastas irmãs e instalar o AdvPLab:
+
 ```powershell
+git clone https://github.com/eliezer-dev-software-enginner/LivrePL.git livrePL
+git clone https://github.com/eliezer-dev-software-enginner/advpl-testlab.git advpl-testlab
 cd advpl-testlab
 python -m pip install -e .
 ```
+
+O bloco funciona em Bash e PowerShell. No Linux, use `python3` no lugar de `python` se esse for o nome disponível no seu ambiente. O destino explícito `livrePL` no primeiro clone mantém o nome esperado pelo runtime, inclusive em sistemas que diferenciam maiúsculas e minúsculas.
+
+Se já baixou os dois repositórios como pastas irmãs, execute apenas `cd advpl-testlab` e `python -m pip install -e .`; não é necessário cloná-los novamente.
 
 Se a CLI ja estava instalada antes da adicao de `--persist`, rode esse comando novamente no mesmo ambiente Python para incluir o modulo de estado.
 
