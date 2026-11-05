@@ -81,6 +81,7 @@ IDs literais de `GetValue('SUBMODELO', 'CAMPO')` tambem sao comparados aos IDs d
 | `semantic.py` | Valida identificadores e chamadas contra simbolos e funcoes conhecidas |
 | `executor.py` | Descobre entrada/fixture, valida e executa pelo interpretador |
 | `main.py` | CLI `advplab --init`, `advplab -run` e `-validate` |
+| `scaffold.py` | Gera projeto MVC1, README, AGENTS, `.gitignore` e a skill `monasteiro` |
 | `pyproject.toml` | Empacotamento e comando instalavel |
 | `examples/getmv.prw` | Exemplo de codigo AdvPL real usando `GetMV` |
 | `examples/ui-headless.prw` | Exemplo executavel de dialogo e mensagens sem UI |

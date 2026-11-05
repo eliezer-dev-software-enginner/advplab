@@ -52,6 +52,12 @@ Projeto gerado pelo AdvPLab para a tabela `@TABLE@`.
 ```text
 Fontes/
     @TABLE@MVC.prw
+.agents/
+    skills/
+        monasteiro/
+            SKILL.md
+.gitignore
+AGENTS.md
 mock.jsonc
 README.md
 ```
@@ -99,6 +105,137 @@ O menu inclui visualizar, incluir, alterar e excluir; o cenario automatizado
 cobre inclusao e nao reproduz a interface grafica MVC.
 O gerador nao consulta SX3 nem cria tabelas no Protheus. A compilacao no RPO
 exige um ambiente Protheus configurado e os campos reais da tabela.
+
+## Skill Monasteiro
+
+O projeto inclui a skill `.agents/skills/monasteiro/SKILL.md`, com o fluxo de trabalho
+para fontes AdvPL, fixtures, MVC, browse, validacao local e compilacao. O `AGENTS.md`
+orienta agentes que trabalham neste repositorio a ler a skill antes de alterar o projeto.
+
+Para instalar a skill no Codex do usuario, execute na raiz do projeto:
+
+```bash
+mkdir -p ~/.codex/skills/monasteiro
+cp .agents/skills/monasteiro/SKILL.md ~/.codex/skills/monasteiro/SKILL.md
+```
+
+No PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME/.codex/skills/monasteiro"
+Copy-Item ".agents/skills/monasteiro/SKILL.md" "$HOME/.codex/skills/monasteiro/SKILL.md" -Force
+```
+
+Abra uma nova conversa do Codex depois da instalacao. A copia local no projeto continua
+sendo a fonte de verdade; repita a copia quando ela for atualizada.
+"""
+
+
+MONASTEIRO_AGENTS = """# Instrucoes para agentes
+
+Antes de analisar ou alterar este projeto AdvPL, leia integralmente
+`.agents/skills/monasteiro/SKILL.md` e siga o fluxo de validacao descrito nela.
+
+Preserve os dados do usuario, nao sobrescreva o `mock.jsonc` e nao inclua artefatos
+gerados em `.vscode/.advpl/` ou `.vscode/advpl/` nos commits.
+"""
+
+
+MONASTEIRO_SKILL = """---
+name: monasteiro
+description: Desenvolver e validar projetos AdvPL/Protheus gerados pelo AdvPLab, com fontes MVC, fixtures, preview, cenarios locais e compilacao opcional no RPO.
+---
+
+# Monasteiro
+
+Use esta skill ao criar, corrigir ou testar fontes AdvPL neste projeto. Ela reune os
+padroes comprovados nos projetos MVC tipo 1, mestre-detalhe, notificacoes e pontos de
+entrada usados como corpus do AdvPLab.
+
+## Comece pelo projeto real
+
+1. Leia `README.md`, `mock.jsonc` e os fontes em `Fontes/`.
+2. Confirme o alias, os campos, a chave primaria e os indices usados no fonte.
+3. Preserve alteracoes existentes. Antes do commit, revise `git status` e o diff.
+4. Trate o SX3 do ambiente como autoridade para tipo, tamanho, decimal, titulo,
+   obrigatoriedade e visibilidade no browse. O mock documenta e simula; nao altera o SX3.
+
+## Mantenha fonte e mock sincronizados
+
+- Declare no `mock.jsonc` todas as tabelas, campos e indices lidos pelo fonte.
+- Preserve as secoes `parametros`, `tabelas`, `funcoes`, `ambiente`, `dialogos`,
+  `especificidadesPrw`, `consultas` e `cenariosMvc`, usando listas vazias quando necessario.
+- Para `DbSetOrder`, `DbSeek` ou `Posicione`, declare `indices` na mesma ordem da chave real.
+- Para funcoes externas sem integracao local, configure retornos deterministas em `funcoes`
+  ou `especificidadesPrw`; nao invente acesso a servidor, SMTP ou banco.
+- Datas do mock usam `AAAA-MM-DD`. A persistencia opcional vai para `state.json`; o mock
+  original nao deve ser reescrito pela execucao.
+
+Exemplo de busca de descricao de produto:
+
+```advpl
+Posicione("SB1", 1, xFilial("SB1") + ZA4->ZA4_PROD, "B1_DESC")
+```
+
+O mock precisa conter `SB1`, os campos `B1_FILIAL`, `B1_COD`, `B1_DESC`, o indice 1 e
+registros coerentes. `SetFields` adiciona uma coluna calculada; para ocultar o codigo
+original, ajuste a visibilidade do campo no SX3, sem remover o campo do modelo.
+
+## Estruture o AdvPL com cuidado
+
+- Mantenha declaracoes `Local`, `Static`, `Private` e `Public` no inicio da funcao.
+- Use `User Function` para entradas chamadas pelo Protheus. Uma `Static Function` pertence
+  somente ao proprio `.prw`; dependencias entre arquivos devem usar funcoes publicas e
+  podem ser declaradas com `//usePrw('OutroFonte.prw')` para a validacao local.
+- Preserve e restaure workareas ao consultar outros aliases.
+- Use indices adequados nas buscas. Filtre filial e exclusao logica nas consultas reais.
+- Salve fontes destinados ao Protheus em Windows-1252 quando houver acentos; mantenha
+  README, JSONC e esta skill em UTF-8.
+- Legendas devem usar os codigos cadastrados no dominio do campo, e nao valores genericos
+  presumidos. `AddLegend` colore o browse e `BrwLegenda` exibe o dialogo.
+
+## Valide do menor para o maior
+
+Na raiz do projeto, execute:
+
+```bash
+advplab -validate Fontes/ALIASMVC.prw
+advplab --preview Fontes/ALIASMVC.prw
+advplab -run Fontes/ALIASMVC.prw
+advplab -run Fontes/ALIASMVC.prw --mvc-case incluir-registro
+```
+
+- `-validate` comprova sintaxe e simbolos cobertos pelo simulador.
+- `--preview` mostra uma aproximacao textual do browse; nao comprova layout, permissoes,
+  callbacks de UI, cores ou comportamento exato do WebApp.
+- `-run` executa apenas a entrada e os ramos alcancados.
+- `--mvc-case` verifica o cenario declarado e o estado final esperado.
+- Use `--persist` somente quando quiser criar ou atualizar `state.json` conscientemente.
+
+Quando a tarefa exigir compilacao real e o servidor estiver conectado no VS Code:
+
+```bash
+advplab -compile Fontes/ALIASMVC.prw
+```
+
+A compilacao usa a sessao em `~/.totvsls/servers.json`. Ela pode falhar se a sessao tiver
+expirado ou se o usuario estiver ativo no Protheus; reconecte pelo VS Code e tente novamente.
+Compilar no RPO nao substitui o teste funcional no ambiente Protheus.
+
+## Limites que devem ser declarados
+
+O AdvPLab trabalha em memoria. Ele nao cria tabelas, nao consulta o SX3 real, nao envia
+e-mail, nao executa DBAccess e nao reproduz toda a interface MVC. Ao concluir, informe
+se houve apenas validacao local, preview, cenario simulado ou compilacao real no RPO.
+"""
+
+
+MVC1_GITIGNORE = """# Estado local do AdvPLab
+state.json
+
+# Binarios e metadados gerados pela extensao AdvPL/TLPP
+.vscode/.advpl/
+.vscode/advpl/
 """
 
 
@@ -139,7 +276,23 @@ def create_mvc1(table='ZA1', legendas=False):
     source_path = source_directory / f'{table}MVC.prw'
     fixture_path = Path.cwd() / 'mock.jsonc'
     readme_path = Path.cwd() / 'README.md'
-    for path in (source_path, fixture_path, readme_path):
+    agents_path = Path.cwd() / 'AGENTS.md'
+    gitignore_path = Path.cwd() / '.gitignore'
+    skill_directory = Path.cwd() / '.agents' / 'skills' / 'monasteiro'
+    skill_path = skill_directory / 'SKILL.md'
+    directories = (
+        source_directory,
+        skill_directory.parent.parent,
+        skill_directory.parent,
+        skill_directory,
+    )
+    for directory in directories:
+        if directory.is_symlink() or (directory.exists() and not directory.is_dir()):
+            raise FixtureError(
+                f'Diretorio invalido para geracao: {directory}; nenhum arquivo foi criado'
+            )
+    for path in (source_path, fixture_path, readme_path, agents_path,
+                 gitignore_path, skill_path):
         if path.exists() or path.is_symlink():
             raise FixtureError(f'Arquivo ja existe: {path}; nenhum arquivo foi criado')
     record = {f'{table}_FILIAL': '01', f'{table}_COD': '000001',
@@ -182,23 +335,27 @@ def create_mvc1(table='ZA1', legendas=False):
     for key, comment in comments.items():
         fixture_text = fixture_text.replace(f'  "{key}":', f'  // {comment}\n  "{key}":', 1)
     created = []
-    created_directory = False
+    created_directories = []
     try:
-        if not source_directory.exists():
-            source_directory.mkdir()
-            created_directory = True
+        for directory in directories:
+            if not directory.exists():
+                directory.mkdir()
+                created_directories.append(directory)
         for path, content in (
             (source_path, source),
             (fixture_path, fixture_text),
             (readme_path, readme),
+            (agents_path, MONASTEIRO_AGENTS),
+            (gitignore_path, MVC1_GITIGNORE),
+            (skill_path, MONASTEIRO_SKILL),
         ):
             with path.open('x', encoding='utf-8') as output:
                 created.append(path)
                 output.write(content)
     except OSError:
-        for path in created:
+        for path in reversed(created):
             path.unlink()
-        if created_directory:
-            source_directory.rmdir()
+        for directory in reversed(created_directories):
+            directory.rmdir()
         raise
     return source_path, fixture_path, readme_path

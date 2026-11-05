@@ -48,7 +48,19 @@ class Mvc1ScaffoldTests(unittest.TestCase):
         readme = Path('README.md').read_text()
         self.assertIn('Cadastro ZA4', readme)
         self.assertIn('mock.jsonc', readme)
+        self.assertIn('.agents/skills/monasteiro/SKILL.md', readme)
+        self.assertIn('~/.codex/skills/monasteiro', readme)
         self.assertNotIn('@TABLE@', readme)
+        skill = Path('.agents/skills/monasteiro/SKILL.md').read_text()
+        self.assertIn('name: monasteiro', skill)
+        self.assertIn('advplab -validate Fontes/ALIASMVC.prw', skill)
+        self.assertIn('advplab -compile Fontes/ALIASMVC.prw', skill)
+        self.assertIn('Posicione("SB1"', skill)
+        self.assertTrue(Path('AGENTS.md').is_file())
+        gitignore = Path('.gitignore').read_text()
+        self.assertIn('.vscode/.advpl/', gitignore)
+        self.assertIn('.vscode/advpl/', gitignore)
+        self.assertIn('state.json', gitignore)
         for command in readme.splitlines():
             if command.startswith('advplab ') and '--persist' not in command:
                 with contextlib.redirect_stdout(io.StringIO()):
@@ -127,6 +139,41 @@ class Mvc1ScaffoldTests(unittest.TestCase):
         self.assertFalse(Path('Fontes').exists())
         self.assertFalse(Path('mock.jsonc').exists())
 
+    def test_existing_gitignore_prevents_generation_and_is_preserved(self):
+        Path('.gitignore').write_text('regra existente')
+        self.assertEqual(1, self.invoke('--mvc1', '--table', 'ZA4'))
+        self.assertEqual('regra existente', Path('.gitignore').read_text())
+        self.assertFalse(Path('Fontes').exists())
+
+    def test_existing_agents_file_prevents_generation_and_is_preserved(self):
+        Path('AGENTS.md').write_text('instrucao existente')
+        self.assertEqual(1, self.invoke('--mvc1', '--table', 'ZA4'))
+        self.assertEqual('instrucao existente', Path('AGENTS.md').read_text())
+        self.assertFalse(Path('Fontes').exists())
+
+    def test_existing_monasteiro_skill_prevents_generation_and_is_preserved(self):
+        skill = Path('.agents/skills/monasteiro/SKILL.md')
+        skill.parent.mkdir(parents=True)
+        skill.write_text('skill existente')
+        self.assertEqual(1, self.invoke('--mvc1', '--table', 'ZA4'))
+        self.assertEqual('skill existente', skill.read_text())
+        self.assertFalse(Path('Fontes').exists())
+
+    def test_agents_as_file_fails_without_partial_output(self):
+        Path('.agents').write_text('arquivo existente')
+        self.assertEqual(1, self.invoke('--mvc1', '--table', 'ZA4'))
+        self.assertEqual('arquivo existente', Path('.agents').read_text())
+        self.assertFalse(Path('Fontes').exists())
+        self.assertFalse(Path('mock.jsonc').exists())
+
+    def test_existing_agent_skill_directories_are_preserved(self):
+        existing = Path('.agents/skills/outra/SKILL.md')
+        existing.parent.mkdir(parents=True)
+        existing.write_text('outra skill')
+        self.assertEqual(0, self.invoke('--mvc1', '--table', 'ZA4'))
+        self.assertEqual('outra skill', existing.read_text())
+        self.assertTrue(Path('.agents/skills/monasteiro/SKILL.md').is_file())
+
     def test_readme_write_failure_rolls_back_generated_files(self):
         original = Path.open
         def fail_readme(path, *args, **kwargs):
@@ -134,6 +181,17 @@ class Mvc1ScaffoldTests(unittest.TestCase):
                 raise PermissionError('falha simulada')
             return original(path, *args, **kwargs)
         with patch.object(Path, 'open', fail_readme):
+            with self.assertRaises(PermissionError):
+                create_mvc1('ZA4')
+        self.assertEqual([], list(Path.cwd().iterdir()))
+
+    def test_skill_write_failure_rolls_back_generated_files_and_directories(self):
+        original = Path.open
+        def fail_skill(path, *args, **kwargs):
+            if path.name == 'SKILL.md':
+                raise PermissionError('falha simulada')
+            return original(path, *args, **kwargs)
+        with patch.object(Path, 'open', fail_skill):
             with self.assertRaises(PermissionError):
                 create_mvc1('ZA4')
         self.assertEqual([], list(Path.cwd().iterdir()))

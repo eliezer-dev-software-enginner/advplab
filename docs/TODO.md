@@ -7,6 +7,8 @@
 
 ## Foco atual
 
+- [x] Embutir a skill `monasteiro`, `AGENTS.md` e `.gitignore` nos projetos MVC1 novos, com instalacao documentada e exclusao dos artefatos `.vscode/.advpl/` e `.vscode/advpl/` (05/11/2026).
+
 - [ ] Avaliar geração opcional de colunas calculadas no browse, já disponível no Protheus Mega Brain; proposta e critérios em [proposta-geracao-colunas-browse.md](proposta-geracao-colunas-browse.md) (05/11/2026).
 
 - [x] Atualizar identidade e pastas do README para AdvPLab/advplab, preservando URL real do remoto e nomes legados de fixtures apenas como compatibilidade (05/11/2026).

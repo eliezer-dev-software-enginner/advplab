@@ -411,3 +411,10 @@
 - **Data:** 28/10/2026
 - **Decisao:** --preview separado de -run renderiza o primeiro browse no terminal com os dados locais. Coletar titulo, acoes e colunas do runtime, completar metadados com o mock e parar a execucao apos Activate. Nao executar acoes ou comandos posteriores, nao persistir e nao conectar ao RPO. Manter o modo -run existente.
 - **Validacao:** Suite propria com casos de preview, exemplo ficticio completo, fonte de controle-patrimonio com mock vazio e regressao basica do LivrePL. Nenhuma alteracao no projeto AdvPL do usuario ou no banco real.
+
+## ADR-054 — Skill Monasteiro e higiene Git no projeto MVC1
+
+- **Data:** 05/11/2026
+- **Contexto:** Projetos novos precisam orientar agentes com os padroes AdvPL ja comprovados e evitar que artefatos binarios da extensao sejam versionados.
+- **Decisao:** `--mvc1` gera `.agents/skills/monasteiro/SKILL.md`, `AGENTS.md` e `.gitignore` junto dos artefatos existentes. A skill cobre fonte/mock sincronizados, indices, `Posicione`, `SetFields`, dependencias `usePrw`, encoding, validacao, preview, cenarios e compilacao. O README gerado ensina a instalacao em `~/.codex/skills/monasteiro`. O `.gitignore` exclui `state.json`, `.vscode/.advpl/` e `.vscode/advpl/`, sem ignorar toda a pasta `.vscode`.
+- **Consequencias:** O projeto funciona com a orientacao local mesmo sem instalacao global. Conflitos em qualquer arquivo novo interrompem a geracao antes da escrita; falhas removem apenas artefatos e diretorios criados pelo comando.

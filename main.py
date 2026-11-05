@@ -42,7 +42,7 @@ def main(argv=None):
     )
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument("--mvc1", action="store_true",
-                        help="gera MVC tipo 1 em Fontes/ e mock.jsonc na pasta atual")
+                        help="gera projeto MVC tipo 1 com fonte, mock, skill e documentacao")
     parser.add_argument("--table", metavar="ALIAS",
                         help="tabela alvo de --mvc1 (padrao: ZA1)")
     parser.add_argument("-legendas", "--legendas", action="store_true",
@@ -95,7 +95,10 @@ def main(argv=None):
                 raise FixtureError("--mvc1 nao aceita opcoes de execucao ou compilacao")
             source, fixture, readme = create_mvc1(args.table if args.table is not None else 'ZA1', legendas=args.legendas)
             source_name = source.relative_to(Path.cwd()).as_posix()
-            print(f"[OK] Criados: {source_name}, {fixture.name} e {readme.name}")
+            print(
+                f"[OK] Criados: {source_name}, {fixture.name}, {readme.name}, "
+                "AGENTS.md, .gitignore e .agents/skills/monasteiro/SKILL.md"
+            )
             print(f"Validar: advplab -validate {source_name}")
             print(f"Testar inclusao: advplab -run {source_name} --mvc-case incluir-registro")
         elif args.init:
