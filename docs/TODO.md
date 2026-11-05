@@ -7,6 +7,8 @@
 
 ## Foco atual
 
+- [x] Atualizar identidade e pastas do README para AdvPLab/advplab, preservando URL real do remoto e nomes legados de fixtures apenas como compatibilidade (05/11/2026).
+
 - [x] Documentar instalação conjunta com os dois git clones, destino livrePL explícito e instalação editável do AdvPLab (05/11/2026).
 
 - [x] Adicionar --preview do browse no terminal com titulo, acoes, colunas e dados do mock (28/10/2026).

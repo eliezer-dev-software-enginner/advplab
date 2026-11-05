@@ -4,7 +4,7 @@ Ambiente de simulacao e testes para executar arquivos AdvPL reais com dados de f
 
 O projeto e separado do `livrePL`. Ele usa o interpretador como dependencia local e acrescenta builtins do framework Protheus por heranca, sem alterar o lexer, o parser ou o interpretador original.
 
-Os utilitarios gerais de texto, arrays, datas e erros agora pertencem ao LivrePL. O TestLab conserva overrides do relogio e dos arquivos para os fixtures: `Date()` e campos `D` sao datas tipadas em memoria, enquanto JSON/JSONC e `state.json` usam `AAAA-MM-DD` ou vazio/null. Consulte a ADR-044.
+Os utilitarios gerais de texto, arrays, datas e erros agora pertencem ao LivrePL. O AdvPLab conserva overrides do relogio e dos arquivos para os fixtures: `Date()` e campos `D` sao datas tipadas em memoria, enquanto JSON/JSONC e `state.json` usam `AAAA-MM-DD` ou vazio/null. Consulte a ADR-044.
 
 ## Estado atual
 
@@ -26,7 +26,7 @@ Os utilitarios gerais de texto, arrays, datas e erros agora pertencem ao LivrePL
 ## Estrutura
 
 ```text
-advpl-testlab/
+advplab/
 |-- fixture_runtime.py
 |-- semantic.py
 |-- executor.py
@@ -48,7 +48,7 @@ O diretorio deve permanecer como irmao de `livrePL`:
 ```text
 protheus/
 |-- livrePL/
-`-- advpl-testlab/
+`-- advplab/
 ```
 
 ## Pré-requisitos
@@ -63,7 +63,7 @@ Estrutura esperada:
 ```text
 protheus/
 |-- livrePL/
-|-- advpl-testlab/
+|-- advplab/
 `-- meu-projeto-advpl/
     |-- mock.jsonc
     `-- rotina.prw
@@ -77,14 +77,16 @@ Na pasta onde deseja guardar os projetos, copie e execute o bloco abaixo para ba
 
 ```powershell
 git clone https://github.com/eliezer-dev-software-enginner/LivrePL.git livrePL
-git clone https://github.com/eliezer-dev-software-enginner/advpl-testlab.git advpl-testlab
-cd advpl-testlab
+git clone https://github.com/eliezer-dev-software-enginner/advpl-testlab.git advplab
+cd advplab
 python -m pip install -e .
 ```
 
+O nome do projeto, da pasta de destino e do comando é `advplab`. O endereço Git acima mantém o nome histórico do repositório remoto; o clone é salvo explicitamente em `advplab`.
+
 O bloco funciona em Bash e PowerShell. No Linux, use `python3` no lugar de `python` se esse for o nome disponível no seu ambiente. O destino explícito `livrePL` no primeiro clone mantém o nome esperado pelo runtime, inclusive em sistemas que diferenciam maiúsculas e minúsculas.
 
-Se já baixou os dois repositórios como pastas irmãs, execute apenas `cd advpl-testlab` e `python -m pip install -e .`; não é necessário cloná-los novamente.
+Se já baixou os dois repositórios como pastas irmãs, execute apenas `cd advplab` e `python -m pip install -e .`; não é necessário cloná-los novamente.
 
 Se a CLI ja estava instalada antes da adicao de `--persist`, rode esse comando novamente no mesmo ambiente Python para incluir o modulo de estado.
 
@@ -130,7 +132,7 @@ O comando cria `mock.jsonc` na pasta atual com comentarios e as sete secoes basi
 advplab -run rotina.prw
 ```
 
-Se `mock.jsonc` ja existir, `--init` informa o erro e preserva seu conteudo. O comando antigo `advpl-testlab` continua disponivel como alias. Para obter o novo comando em uma instalacao existente, reinstale com `python -m pip install -e .` na pasta deste repositorio.
+Se `mock.jsonc` ja existir, `--init` informa o erro e preserva seu conteudo. O comando da CLI é `advplab`. Para atualizar uma instalacao existente, reinstale com `python -m pip install -e .` na pasta deste repositorio.
 
 ### Criar um projeto MVC tipo 1
 
@@ -171,7 +173,7 @@ Copie a propriedade abaixo para a raiz do seu fixture e ajuste os valores. Este 
 ]
 ```
 
-`DDATABASE` alimenta `Date()`/`dDataBase`; `TIME` alimenta `Time()`; `CUSERLOCAL` e um caminho simulado, nao um diretorio criado pelo TestLab. `MODEL_OPERATION` controla `GetOperation()` fora de `--mvc-case` (padrao `2`; durante um cenario de inclusao, o TestLab usa `3`). Altere um resultado `MAIL_*_RESULT` para um numero diferente de zero para simular falha; `MAIL_ERROR_MESSAGE` e usado quando o fonte chama `GetErrorString()`.
+`DDATABASE` alimenta `Date()`/`dDataBase`; `TIME` alimenta `Time()`; `CUSERLOCAL` e um caminho simulado, nao um diretorio criado pelo AdvPLab. `MODEL_OPERATION` controla `GetOperation()` fora de `--mvc-case` (padrao `2`; durante um cenario de inclusao, o AdvPLab usa `3`). Altere um resultado `MAIL_*_RESULT` para um numero diferente de zero para simular falha; `MAIL_ERROR_MESSAGE` e usado quando o fonte chama `GetErrorString()`.
 
 Ha ainda entradas que dependem do fonte, sem valor universal para copiar: `RECLOCK_<ALIAS>` (por exemplo, `{"RECLOCK_ZA2": false}`) faz `RecLock`/`DbRLock` falhar nesse alias; sem a entrada, o bloqueio e permitido. `PARAMIXB`, `AHEADER` e `ACOLS` podem ser declarados como valores/arrays globais, mas precisam ter a estrutura e os indices esperados pelo `.prw` testado. Outros nomes em `ambiente` tambem viram globais do interpretador; isso nao cria automaticamente uma funcao ou uma integracao Protheus. Parametros lidos por `GetMV` pertencem a `parametros`, nao a `ambiente`.
 
@@ -192,7 +194,7 @@ advplab -run EX1.prw --persist
 advplab -run EX1.prw --persist
 ```
 
-O primeiro comando parte dos `registros` de `mock.jsonc` se ainda nao houver `state.json`. Cada execucao seguinte com `--persist` carrega o estado anterior; apos uma execucao bem-sucedida que alterou registros, o TestLab substitui `state.json` por um snapshot JSON. O arquivo fica no mesmo diretorio da fixture descoberta (ou informada por `--fixture`) e e ignorado pelo Git nos projetos deste workspace. O arquivo de mock nunca e reescrito. Sem `--persist`, a execucao ignora `state.json` e usa apenas a fixture. Estado invalido ou alias nao declarado causa erro sem sobrescrita; erro de execucao ou divergencia de expectativa MVC tambem nao grava. Nao execute duas gravacoes simultaneas no mesmo `state.json`: bloqueio de concorrencia ainda nao esta implementado.
+O primeiro comando parte dos `registros` de `mock.jsonc` se ainda nao houver `state.json`. Cada execucao seguinte com `--persist` carrega o estado anterior; apos uma execucao bem-sucedida que alterou registros, o AdvPLab substitui `state.json` por um snapshot JSON. O arquivo fica no mesmo diretorio da fixture descoberta (ou informada por `--fixture`) e e ignorado pelo Git nos projetos deste workspace. O arquivo de mock nunca e reescrito. Sem `--persist`, a execucao ignora `state.json` e usa apenas a fixture. Estado invalido ou alias nao declarado causa erro sem sobrescrita; erro de execucao ou divergencia de expectativa MVC tambem nao grava. Nao execute duas gravacoes simultaneas no mesmo `state.json`: bloqueio de concorrencia ainda nao esta implementado.
 
 Para MVC1, use `advplab -run ZA1MVC.prw --mvc-case incluir-livro-valido --persist`. Uma inclusao aprovada fica disponivel para o proximo `-run ... --persist`; uma inclusao rejeitada nao cria nem altera o estado. Expectativas absolutas como `totalRegistros: 2` continuam sendo verificadas contra o estado carregado, portanto repetir o mesmo caso de inclusao pode falhar por ja existir um registro anterior. Para voltar ao ponto inicial, guarde ou remova conscientemente o `state.json`; isso nao altera o JSONC.
 
@@ -230,9 +232,9 @@ Um fonte pode declarar dependencias locais pela convencao:
 //usePrw('NOTIFSOL.prw')
 ```
 
-Cada declaracao deve ocupar sua propria linha. O caminho e relativo ao arquivo que contem o comentario, deve terminar em `.prw` e permanecer dentro do diretorio do fonte principal. O TestLab carrega as dependencias recursivamente, evita duplicacao/ciclos e gera erro claro quando o arquivo nao existe.
+Cada declaracao deve ocupar sua propria linha. O caminho e relativo ao arquivo que contem o comentario, deve terminar em `.prw` e permanecer dentro do diretorio do fonte principal. O AdvPLab carrega as dependencias recursivamente, evita duplicacao/ciclos e gera erro claro quando o arquivo nao existe.
 
-As funcoes dos arquivos carregados participam da validacao semantica e da execucao. Uma `User Function EnviarEmailSolicitacao()` pode ser chamada por outro fonte como `U_EnviarEmailSolicitacao()`, conforme a convencao do AdvPL. `Static Function` fica restrita ao proprio fonte, conforme a [documentacao da TOTVS](https://tdn.totvs.com/display/framework/FUNCTION). O TestLab ainda aceita `Function` publica entre fontes na simulacao, mas o compilador Protheus usado em `desafio1-solicitacao-compra` rejeitou `Function` simples no fonte customizado; para auxiliares compartilhados nesse ambiente, use `User Function` e chamadas `U_...`. O comentario `//usePrw` e inofensivo para o compilador Protheus e serve como mapa para pessoas, TestLab e compilacao recursiva.
+As funcoes dos arquivos carregados participam da validacao semantica e da execucao. Uma `User Function EnviarEmailSolicitacao()` pode ser chamada por outro fonte como `U_EnviarEmailSolicitacao()`, conforme a convencao do AdvPL. `Static Function` fica restrita ao proprio fonte, conforme a [documentacao da TOTVS](https://tdn.totvs.com/display/framework/FUNCTION). O AdvPLab ainda aceita `Function` publica entre fontes na simulacao, mas o compilador Protheus usado em `desafio1-solicitacao-compra` rejeitou `Function` simples no fonte customizado; para auxiliares compartilhados nesse ambiente, use `User Function` e chamadas `U_...`. O comentario `//usePrw` e inofensivo para o compilador Protheus e serve como mapa para pessoas, AdvPLab e compilacao recursiva.
 
 ### Preview do browse no terminal
 
@@ -256,7 +258,7 @@ Titulos das colunas usam AddColumn/SetFields do fonte ou `titulo`, `descricao`, 
 
 ### Compilacao real recursiva no RPO (opcional)
 
-`-validate` e `-run` continuam **locais e headless**. Para recompilar no RPO conectado ao AppServer, use `-compile`. Essa opcao chama o `advpls`/`advpls.exe` do [TDS-CLI oficial](https://github.com/totvs/tds-ls/blob/master/TDS-CLi.md); ela nao simula a tecla Ctrl+F9 e nunca roda implicitamente. O TestLab procura o executavel no `PATH` ou na extensao TOTVS do VS Code; se necessario, informe `--tds-cli`.
+`-validate` e `-run` continuam **locais e headless**. Para recompilar no RPO conectado ao AppServer, use `-compile`. Essa opcao chama o `advpls`/`advpls.exe` do [TDS-CLI oficial](https://github.com/totvs/tds-ls/blob/master/TDS-CLi.md); ela nao simula a tecla Ctrl+F9 e nunca roda implicitamente. O AdvPLab procura o executavel no `PATH` ou na extensao TOTVS do VS Code; se necessario, informe `--tds-cli`.
 
 Primeiro confira o plano, sem conexao nem escrita no RPO:
 
@@ -288,13 +290,13 @@ user=SEU_USUARIO
 psw=SUA_SENHA
 ```
 
-Se sua instalacao exigir token de compilacao, acrescente uma secao `[authorization]` com `action=authorization` e o token conforme a [documentacao TOTVS](https://github.com/totvs/tds-ls/blob/master/TDS-cli-script.md). O TestLab aceita nesse arquivo somente `[user]`, `[authentication]` e `[authorization]`, criando sozinho a acao de compilacao. Informe ao menos uma pasta de includes existente:
+Se sua instalacao exigir token de compilacao, acrescente uma secao `[authorization]` com `action=authorization` e o token conforme a [documentacao TOTVS](https://github.com/totvs/tds-ls/blob/master/TDS-cli-script.md). O AdvPLab aceita nesse arquivo somente `[user]`, `[authentication]` e `[authorization]`, criando sozinho a acao de compilacao. Informe ao menos uma pasta de includes existente:
 
 ```powershell
 advplab -compile TRNSOL01.prw --tds-config 'C:\caminho-privado\tds-auth.ini' --include 'C:\caminho\includes'
 ```
 
-O TestLab gera uma lista temporaria em CP1252 com cada `.prw` do grafo `//usePrw` uma vez, por padrao com dependencias antes dos chamadores, e manda o TDS-CLI recompilar os cinco fontes de `TRNSOL01.prw` em uma invocacao. A lista e o script temporarios sao removidos ao final; o arquivo privado original nao e modificado. Isso exige acesso ao AppServer, autenticacao, includes corretos e permissao de compilacao/acesso exclusivo ao RPO, conforme a [documentacao TDS-VSCode](https://github.com/totvs/tds-vscode/blob/master/docs/compilation.md). Nao reutiliza automaticamente a sessao autenticada do VS Code.
+O AdvPLab gera uma lista temporaria em CP1252 com cada `.prw` do grafo `//usePrw` uma vez, por padrao com dependencias antes dos chamadores, e manda o TDS-CLI recompilar os cinco fontes de `TRNSOL01.prw` em uma invocacao. A lista e o script temporarios sao removidos ao final; o arquivo privado original nao e modificado. Isso exige acesso ao AppServer, autenticacao, includes corretos e permissao de compilacao/acesso exclusivo ao RPO, conforme a [documentacao TDS-VSCode](https://github.com/totvs/tds-vscode/blob/master/docs/compilation.md). Nao reutiliza automaticamente a sessao autenticada do VS Code.
 
 Quando funcoes foram movidas entre fontes e o RPO ainda guarda os simbolos antigos, informe a ordem completa explicitamente. Por exemplo, para liberar as antigas `U_Z04*` de `TRNSOL01.prw` antes de compilar `OUACOES.prw`:
 
@@ -302,7 +304,7 @@ Quando funcoes foram movidas entre fontes e o RPO ainda guarda os simbolos antig
 advplab -compile TRNSOL01.prw --dry-run --compile-order 'ENVEMAIL.prw,NOTIFSOL.prw,UTILS.prw,TRNSOL01.prw,OUACOES.prw'
 ```
 
-Repita com `--tds-config` e `--include` sem `--dry-run` para compilar nessa ordem. A ordem deve listar todos os fontes descobertos exatamente uma vez. Erros do TDS-CLI retornam codigo de saida nao zero; o TestLab nao exclui objetos do RPO automaticamente. A integracao real com o seu AppServer ainda nao foi testada aqui, apenas o plano e a chamada simulada ao TDS-CLI.
+Repita com `--tds-config` e `--include` sem `--dry-run` para compilar nessa ordem. A ordem deve listar todos os fontes descobertos exatamente uma vez. Erros do TDS-CLI retornam codigo de saida nao zero; o AdvPLab nao exclui objetos do RPO automaticamente. A integracao real com o seu AppServer ainda nao foi testada aqui, apenas o plano e a chamada simulada ao TDS-CLI.
 
 Para validar todas as funções do arquivo sem executar nenhuma delas:
 
@@ -325,11 +327,11 @@ Por exemplo, `Local oStmt := Nilo` produz `SemanticError: Variável 'Nilo' não 
 
 Uma `PRIVATE` declarada no fonte pode ser acessada por outra funcao enquanto seu escopo dinamico estiver ativo. Por isso, `-validate` aceita o nome em funcoes auxiliares; `-run` ainda gera erro se a funcao for executada sem a `PRIVATE` ativa. Variaveis `LOCAL` continuam restritas a funcao que as declarou. O diagnostico de nome ausente aponta para a linha da leitura, nao para uma mencao anterior em comentario ou declaracao.
 
-O TestLab aplica uma **convenção estrita de organização**: no início de cada função ou método, declare `LOCAL`/`STATIC`, depois `PRIVATE` e por último `PUBLIC`, antes dos comandos executáveis. Uma declaração fora dessa ordem ou dentro de `If`/`For`/outro bloco gera `SemanticError` na linha da declaração. Exemplo: `Private nP := 1` seguido de `Local nL := 2` falha em `-validate` e `-run`. Esta é uma política de validação do TestLab; a [documentação da TOTVS](https://tdn.totvs.com/pages/viewpage.action?pageId=6063095) não impõe a mesma ordem como regra geral da linguagem AdvPL.
+O AdvPLab aplica uma **convenção estrita de organização**: no início de cada função ou método, declare `LOCAL`/`STATIC`, depois `PRIVATE` e por último `PUBLIC`, antes dos comandos executáveis. Uma declaração fora dessa ordem ou dentro de `If`/`For`/outro bloco gera `SemanticError` na linha da declaração. Exemplo: `Private nP := 1` seguido de `Local nL := 2` falha em `-validate` e `-run`. Esta é uma política de validação do AdvPLab; a [documentação da TOTVS](https://tdn.totvs.com/pages/viewpage.action?pageId=6063095) não impõe a mesma ordem como regra geral da linguagem AdvPL.
 
 Para fontes MVC, a validacao tambem confere acoes literais `VIEWDEF.<modulo>` e `U_<nome>` (com ou sem `()`) de `ADD OPTION` contra as `User Function` carregadas. Por exemplo, `ACTION 'U_Z04CAN'` exige `User Function Z04CAN()` no fonte atual ou em um `//usePrw` carregado; uma funcao `Static` de mesmo nome nao atende a referencia. Uma resposta explicitamente configurada em `funcoes` do fixture tambem e aceita. Acoes calculadas dinamicamente nao sao verificadas estaticamente. A validacao tambem confere campos literais de `SetPrimaryKey({ ... })` contra a fixture e IDs literais de `GetValue('SUBMODELO', 'CAMPO')` contra `AddFields`/`AddGrid`. Isso ocorre mesmo que as funcoes MVC nao sejam executadas pela entrada headless. Por exemplo, `ZA1MASTE` em vez de `ZA1MASTER` falha tanto em `-validate` quanto em `-run`.
 
-Da mesma forma, `Local aArea := GetAreaTESTE()` produz `SemanticError: Função 'GetAreaTESTE' não encontrada`. São aceitas as funções declaradas no próprio fonte, os built-ins implementados pelo LivrePL/TestLab, construtores de classes e funções simuladas em `funcoes` no JSON. Para validar uma simulação declarada em outro fixture, informe `--fixture arquivo.json` também com `-validate`.
+Da mesma forma, `Local aArea := GetAreaTESTE()` produz `SemanticError: Função 'GetAreaTESTE' não encontrada`. São aceitas as funções declaradas no próprio fonte, os built-ins implementados pelo LivrePL/AdvPLab, construtores de classes e funções simuladas em `funcoes` no JSON. Para validar uma simulação declarada em outro fixture, informe `--fixture arquivo.json` também com `-validate`.
 
 Sem instalar, o mesmo fluxo pode ser executado dentro deste repositorio:
 
@@ -483,7 +485,7 @@ Como cada `.prw` pode possuir várias confirmações, configure `MsgYesNo` em `e
     }
   ],
   "ambiente": [
-    {"CUSERLOCAL": "C:\\advpl-testlab"},
+    {"CUSERLOCAL": "C:\\advplab"},
     {"TIME": "12:34:56"}
   ]
 }
@@ -499,9 +501,9 @@ No `TRNSOL02`, `LRET: true` representa o botão Consultar e `false` representa C
 2. Cadastre parâmetros, tabelas, funções externas e consultas usadas pelo fonte.
 3. Abra um terminal no diretório do `.prw`.
 4. Execute `advplab -run NomeDoFonte.prw`.
-5. Para validar o TestLab, execute `python -m unittest discover -s tests -v` neste repositório.
+5. Para validar o AdvPLab, execute `python -m unittest discover -s tests -v` neste repositório.
 
-A suite propria do TestLab usa apenas fontes e fixtures deste repositorio; nao depende dos `.prw` de `desafios-aprendizado`. Os testes de integracao dos casos reais ficam em `desafios-aprendizado/tests` e podem ser executados separadamente naquele repositorio.
+A suite propria do AdvPLab usa apenas fontes e fixtures deste repositorio; nao depende dos `.prw` de `desafios-aprendizado`. Os testes de integracao dos casos reais ficam em `desafios-aprendizado/tests` e podem ser executados separadamente naquele repositorio.
 
 ## Cobertura atual
 
@@ -520,7 +522,7 @@ Estes recursos passam pelo parser e pelo interpretador, portanto sua lógica é 
 - chamadas de função, funções estáticas, acesso a arrays e retorno de valores;
 - classes, métodos e code blocks dentro do subconjunto implementado pelo LivrePL;
 - builtins básicos do LivrePL, como `Len`, `AllTrim`, `Upper`, `Lower`, `AAdd`, `Empty`, `ValType` e `cValToChar`;
-- builtins Protheus adicionados pelo TestLab: `GetMV`, `StrTran`, `Chr`, `Transform`, `DToC` e `MsgStop`;
+- builtins Protheus adicionados pelo AdvPLab: `GetMV`, `StrTran`, `Chr`, `Transform`, `DToC` e `MsgStop`;
 - `MsgAlert` e `MsgInfo` como saída textual `[ALERTA]` e `[INFO]`, sem janela;
 - `MsgYesNo` com retorno determinístico por fonte e conteúdo, sem saída textual;
 - `Define MSDialog ... TITLE ... FROM ...` como saída textual `[MSDIALOG]`;
