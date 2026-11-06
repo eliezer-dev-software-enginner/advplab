@@ -203,6 +203,7 @@ Mudancas novas atualizam `docs/CONTEXT.md`, `docs/DECISIONS.md`, `docs/TODO.md` 
 - Aliases estaticos Z02/Z03, `While`, `DbSeek`, `DbSkip`, `Eof`, `Deleted`, `Transform`, `DToC` e `MsgStop` possuem runtime headless.
 - Os eventos ENVIO, APROVACAO, REJEICAO e PROCESSAMENTO montam o HTML original e capturam o e-mail em memoria; evento desconhecido retorna falso.
 - A CLI aceita argumentos da entrada por `--args-json`, por exemplo `["ENVIO"]`.
+- A execucao tambem aceita a forma compativel com o LivrePL `advplab --run Fontes/Utils.prw Soma --arg 2`: funcao posicional e `--arg` textual repetivel. A forma explicita `--entry`/`--args-json` permanece disponivel; os pares nao podem ser misturados.
 - Os testes do corpus real pertencem agora a `desafios-aprendizado/tests`; a suite propria do TestLab nao precisa de fontes desse outro projeto. Os testes legados de `TRNSOL02.prw`, ausente no corpus atual, foram retirados da descoberta automatica.
 
 ### TRNSOL01 headless

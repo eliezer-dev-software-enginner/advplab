@@ -435,3 +435,11 @@
 - **Decisao:** `--init` e `--mvc1` passam a gerar `FwGetUserName` em `funcoes` e `DDATABASE`, `TIME` e `CUSERLOCAL` em `ambiente`, com valores locais deterministas e substituiveis. A geracao nao le usuario autenticado, relogio, diretorios ou servidores da maquina.
 - **Limite:** `UsrRetMail`, SMTP, respostas de dialogo, `PARAMIXB`, `AHEADER`, `ACOLS` e resultados de bloqueio permanecem fora do padrao porque sua forma ou resultado depende do fonte e do cenario.
 - **Validacao:** Testes de `--init` executam um fonte que chama `FwGetUserName`; testes do scaffold MVC1 verificam os quatro valores gerados. A suite completa e a geracao real em diretorio temporario fecham a validacao.
+
+## ADR-057 — Interface de argumentos compativel com o LivrePL
+
+- **Data:** 06/11/2026
+- **Contexto:** O LivrePL usa fonte e funcao como posicionais e oferece `--arg` textual, enquanto o AdvPLab exigia `--entry` e `--args-json`. O mesmo comando simples nao funcionava nas duas CLIs.
+- **Decisao:** `advplab --run ARQUIVO.PRW FUNCAO --arg TEXTO` passa a aceitar funcao posicional e `--arg` repetivel. `--entry` e `--args-json` continuam suportados. Misturar as duas formas de entrada ou de argumentos produz erro explicito.
+- **Compatibilidade:** O LivrePL aceita `--run` como alias opcional antes do caminho, preservando sua sintaxe posicional original. Ambos aceitam caminhos relativos em subdiretorios.
+- **Validacao:** Testes executam `Fontes/Utils.prw` com `Soma --arg 2` nas duas CLIs e cobrem conflitos de opcoes no AdvPLab.

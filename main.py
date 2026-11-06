@@ -66,6 +66,7 @@ def main(argv=None):
     action.add_argument("--preview", metavar="ARQUIVO.PRW",
                         help="pre-visualiza o primeiro browse no terminal usando o mock")
     action.add_argument("-run", "--run", dest="source", metavar="ARQUIVO.PRW")
+    parser.add_argument("entry_positional", nargs="?", metavar="FUNCAO")
     action.add_argument(
         "-validate",
         "--validate",
@@ -95,10 +96,22 @@ def main(argv=None):
         "--args-json",
         help='argumentos da entrada como array JSON, por exemplo: ["ENVIO"]',
     )
+    parser.add_argument(
+        "--arg", action="append", default=[], metavar="TEXTO",
+        help="argumento textual da entrada; pode repetir",
+    )
     args = parser.parse_args(argv)
     try:
         if args.legendas and not args.mvc1:
             raise FixtureError("-legendas requer --mvc1")
+        if args.entry_positional and not args.source:
+            raise FixtureError("funcao posicional requer -run")
+        if args.entry_positional and args.entry:
+            raise FixtureError("informe a funcao pela posicao ou por --entry, nao pelos dois")
+        if args.arg and not args.source:
+            raise FixtureError("--arg requer -run")
+        if args.arg and args.args_json is not None:
+            raise FixtureError("--arg e --args-json nao podem ser usados juntos")
         if args.table is not None and not args.mvc1:
             raise FixtureError("--table requer --mvc1")
         if args.mvc1:
@@ -163,7 +176,7 @@ def main(argv=None):
                 raise FixtureError("--preview nao aceita --mvc-case ou --persist")
             if args.tds_config or args.tds_cli or args.include or args.compile_order or args.dry_run:
                 raise FixtureError("opcoes de compilacao requerem -compile")
-            entry_args = []
+            entry_args = list(args.arg)
             if args.args_json is not None:
                 try:
                     entry_args = json.loads(args.args_json)
@@ -176,7 +189,7 @@ def main(argv=None):
             execute_file(
                 args.preview or args.source,
                 fixture_path=args.fixture,
-                entry=args.entry,
+                entry=args.entry or args.entry_positional,
                 args=entry_args,
                 name_profile=args.name_profile,
                 mvc_case=args.mvc_case,

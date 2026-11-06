@@ -26,6 +26,7 @@ Antes de implementar, classifique a mudança:
    Nos mocks gerados, preserve os exemplos de `FwGetUserName`, `DDATABASE`, `TIME` e `CUSERLOCAL` ou ajuste seus valores ao cenário. Eles são dados locais determinísticos, não dados obtidos do Protheus.
 5. Adicione ou ajuste um teste que observe o comportamento, evitando testes que apenas repitam a implementação.
 6. Execute `python -m unittest discover -s tests -v` e o menor comando CLI que demonstre a mudança.
+   Para execucao simples, preserve a equivalencia `advplab --run Fontes/Utils.prw Soma --arg 2`; `--entry` e `--args-json` atendem chamadas explicitas e tipadas.
 7. Atualize a documentação segundo a política abaixo e revise o diff antes de concluir.
 
 Compilação no RPO é uma integração real e opcional. Não a apresente como necessária para os testes headless e não use credenciais, tokens ou arquivos locais como dados versionados.

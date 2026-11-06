@@ -7,6 +7,8 @@
 
 ## Foco atual
 
+- [x] Alinhar a execucao simples com o LivrePL, aceitando fonte em subdiretorio, funcao posicional e `--arg` textual repetivel (06/11/2026).
+
 - [x] Incluir `FwGetUserName`, `DDATABASE`, `TIME` e `CUSERLOCAL` como metadados locais deterministas nos mocks gerados por `--init` e `--mvc1`, documentando os metadados excluidos por dependerem do projeto (05/11/2026).
 
 - [x] Adicionar workflow de pull request autocontido, skill propria do AdvPLab e politica de documentacao que separa README publico de detalhes tecnicos e locais (05/11/2026).

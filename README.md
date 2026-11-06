@@ -183,11 +183,21 @@ Ha ainda entradas que dependem do fonte, sem valor universal para copiar: `RECLO
 -run ARQUIVO.PRW       fonte AdvPL alvo da execução ou simulação
 --fixture ARQUIVO.JSONC fixture específico; aceita também .json
 --entry FUNCAO         entrada; opcional, usa a primeira User Function
+FUNCAO                 alternativa posicional a --entry, depois do fonte
+--arg TEXTO            argumento textual; pode repetir
 --args-json ARRAY       argumentos da entrada como array JSON
 --name-profile PERFIL    modern (padrao) ou legacy10 (10 caracteres historicos)
 --mvc-case NOME          executa cenario MVC de inclusao definido no fixture
 --persist                carrega e salva registros no state.json ao lado da fixture
 ```
+
+Para comandos simples compativeis com o LivrePL, a funcao pode vir logo depois do fonte e `--arg` pode ser repetido:
+
+```bash
+advplab --run Fontes/Utils.prw Soma --arg 2 --arg 3
+```
+
+Use `--args-json` quando precisar preservar tipos JSON, como numeros, booleanos ou arrays. Nao misture `--arg` com `--args-json`, nem a funcao posicional com `--entry`.
 
 ### Persistencia opcional em `state.json`
 
