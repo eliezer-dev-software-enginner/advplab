@@ -31,6 +31,8 @@ Antes de implementar, classifique a mudança:
 
 Compilação no RPO é uma integração real e opcional. Não a apresente como necessária para os testes headless e não use credenciais, tokens ou arquivos locais como dados versionados.
 
+Quando a suite do checkout passar, mas o comando global continuar com comportamento antigo, verifique `command -v livrepl`, `command -v advplab` e o interpretador indicado no shebang. Para instalações pipx desatualizadas, reinstale o checkout correto com `pipx install --force --editable <caminho>` e repita o comando original no projeto alvo. Registre essa orientação também na skill `monasteiro` distribuída por `scaffold.py`.
+
 ## Documentação
 
 Mudanças novas devem atualizar `docs/`. Registre estado consolidado em `docs/CONTEXT.md`, decisões duradouras em `docs/DECISIONS.md` e pendências em `docs/TODO.md`.

@@ -216,6 +216,29 @@ advplab -run Fontes/ALIASMVC.prw --mvc-case incluir-registro
 - `--mvc-case` verifica o cenario declarado e o estado final esperado.
 - Use `--persist` somente quando quiser criar ou atualizar `state.json` conscientemente.
 
+### Confira o executavel instalado
+
+Se os testes do checkout passarem, mas `livrepl` ou `advplab` no terminal ainda rejeitar
+uma opcao nova, confirme qual executavel global esta sendo usado antes de alterar o fonte:
+
+```bash
+command -v livrepl
+command -v advplab
+head -n 1 "$(command -v livrepl)"
+head -n 1 "$(command -v advplab)"
+```
+
+Uma instalacao antiga no `PATH` pode continuar carregando uma copia desatualizada. Quando
+a CLI tiver sido instalada com pipx, atualize o checkout correto em modo editavel:
+
+```bash
+pipx install --force --editable <caminho-do-checkout-livrePL>
+pipx install --force --editable <caminho-do-checkout-advplab>
+```
+
+Depois, repita no diretorio do projeto o comando exato que falhou. Nao considere a suite
+do repositorio suficiente para comprovar que o executavel global foi atualizado.
+
 Quando a tarefa exigir compilacao real e o servidor estiver conectado no VS Code:
 
 ```bash

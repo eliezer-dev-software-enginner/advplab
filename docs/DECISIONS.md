@@ -443,3 +443,11 @@
 - **Decisao:** `advplab --run ARQUIVO.PRW FUNCAO --arg TEXTO` passa a aceitar funcao posicional e `--arg` repetivel. `--entry` e `--args-json` continuam suportados. Misturar as duas formas de entrada ou de argumentos produz erro explicito.
 - **Compatibilidade:** O LivrePL aceita `--run` como alias opcional antes do caminho, preservando sua sintaxe posicional original. Ambos aceitam caminhos relativos em subdiretorios.
 - **Validacao:** Testes executam `Fontes/Utils.prw` com `Soma --arg 2` nas duas CLIs e cobrem conflitos de opcoes no AdvPLab.
+
+## ADR-058 — Diagnostico da CLI global na skill Monasteiro
+
+- **Data:** 06/11/2026
+- **Contexto:** Uma suite executada pelo checkout pode passar enquanto o comando global no `PATH` ainda aponta para uma copia antiga instalada pelo pipx.
+- **Decisao:** A skill Monasteiro gerada orienta a localizar `livrepl` e `advplab`, conferir o interpretador do script, reinstalar explicitamente o checkout correto em modo editavel quando necessario e repetir o comando original no diretorio do projeto.
+- **Limite:** A orientacao nao presume caminhos absolutos nem atualiza instalacoes automaticamente. O agente deve identificar a origem antes de modificar o ambiente do usuario.
+- **Validacao:** O teste do scaffold exige que a skill gerada contenha os comandos de diagnostico, reinstalacao pipx e repeticao do caso real.

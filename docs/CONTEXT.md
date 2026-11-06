@@ -269,6 +269,8 @@ O pacote e o comando principal se chamam `advplab`. `advpl-testlab` permanece co
 
 O gerador MVC1 tambem cria README.md na raiz com estrutura, comandos, ajustes de campos, persistencia e limites da simulacao. README existente bloqueia a geracao sem sobrescrever conteudo.
 
+A skill Monasteiro gerada tambem cobre divergencias entre o checkout testado e uma CLI global antiga: localizar os executaveis no `PATH`, conferir seu interpretador, atualizar a instalacao pipx em modo editavel e repetir o comando original no projeto alvo.
+
 ## Compilacao pela sessao salva (27/10/2026)
 
 Sem --tds-config, -compile le ~/.totvsls/servers.json e usa tds_session.py para iniciar o LS, reconectar com token e compilar. Includes do servidor/globais por padrao; --include substitui. Alternativa INI preservada. Descoberta de binario agora usa linux/mac/windows. Sem gravacao do JSON nem senha. Handshake LSP local validado com timeout de 60s; reconexao e compilacao real pendentes. Ver fase-compilacao-rpo.md.
