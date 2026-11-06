@@ -442,7 +442,7 @@
 - **Contexto:** O LivrePL usa fonte e funcao como posicionais e oferece `--arg` textual, enquanto o AdvPLab exigia `--entry` e `--args-json`. O mesmo comando simples nao funcionava nas duas CLIs.
 - **Decisao:** `advplab --run ARQUIVO.PRW FUNCAO --arg TEXTO` passa a aceitar funcao posicional e `--arg` repetivel. `--entry` e `--args-json` continuam suportados. Misturar as duas formas de entrada ou de argumentos produz erro explicito.
 - **Compatibilidade:** O LivrePL aceita `--run` como alias opcional antes do caminho, preservando sua sintaxe posicional original. Ambos aceitam caminhos relativos em subdiretorios.
-- **Validacao:** Testes executam `Fontes/Utils.prw` com `Soma --arg 2` nas duas CLIs e cobrem conflitos de opcoes no AdvPLab.
+- **Validacao:** Testes executam `Fontes/Utils.prw` com `Soma --arg 2` nas duas CLIs, cobrem conflitos de opcoes no AdvPLab e verificam que o README dos projetos MVC1 novos explica as formas textual e JSON tipada.
 
 ## ADR-058 — Diagnostico da CLI global na skill Monasteiro
 

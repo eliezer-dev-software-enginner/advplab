@@ -7,6 +7,8 @@
 
 ## Foco atual
 
+- [x] Documentar no README gerado por `--mvc1` a execucao de funcao posicional com `--arg` e a alternativa tipada `--args-json` (06/11/2026).
+
 - [x] Ensinar na skill Monasteiro a diagnosticar executaveis globais desatualizados no PATH, atualizar instalacoes pipx editaveis e repetir o comando original (06/11/2026).
 
 - [x] Alinhar a execucao simples com o LivrePL, aceitando fonte em subdiretorio, funcao posicional e `--arg` textual repetivel (06/11/2026).

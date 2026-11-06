@@ -54,6 +54,8 @@ class Mvc1ScaffoldTests(unittest.TestCase):
         self.assertIn('mock.jsonc', readme)
         self.assertIn('.agents/skills/monasteiro/SKILL.md', readme)
         self.assertIn('~/.codex/skills/monasteiro', readme)
+        self.assertIn('advplab --run Fontes/OutroFonte.prw MinhaFuncao --arg valor1 --arg valor2', readme)
+        self.assertIn("--args-json '[2, true]'", readme)
         self.assertNotIn('@TABLE@', readme)
         skill = Path('.agents/skills/monasteiro/SKILL.md').read_text()
         self.assertIn('name: monasteiro', skill)
@@ -69,7 +71,8 @@ class Mvc1ScaffoldTests(unittest.TestCase):
         self.assertIn('.vscode/advpl/', gitignore)
         self.assertIn('state.json', gitignore)
         for command in readme.splitlines():
-            if command.startswith('advplab ') and '--persist' not in command:
+            if (command.startswith('advplab ') and '--persist' not in command and
+                    'OutroFonte.prw' not in command):
                 with contextlib.redirect_stdout(io.StringIO()):
                     self.assertEqual(0, main(command.split()[1:]))
 

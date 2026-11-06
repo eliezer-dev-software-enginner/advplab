@@ -82,6 +82,17 @@ A validacao deve indicar quatro funcoes. O browse inicial mostra a tabela vazia.
 O cenario `incluir-registro` espera `salvou=true, totalRegistros=1`.
 Sem `--persist`, os registros ficam apenas em memoria e o mock nao e alterado.
 
+Para executar uma funcao especifica de qualquer fonte do projeto, informe o caminho,
+o nome da funcao e repita `--arg` para cada argumento textual:
+
+```bash
+advplab --run Fontes/OutroFonte.prw MinhaFuncao --arg valor1 --arg valor2
+```
+
+Use `--args-json '[2, true]'` quando os argumentos precisarem manter tipos JSON. A forma
+explicita `--entry MinhaFuncao` continua aceita; nao misture `--entry` com a funcao
+posicional nem `--args-json` com `--arg`.
+
 ## Ajustar a tabela
 
 Os campos `@TABLE@_FILIAL`, `@TABLE@_COD` e `@TABLE@_DESC` sao exemplos.
