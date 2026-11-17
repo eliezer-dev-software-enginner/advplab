@@ -242,6 +242,8 @@ Para `GetSXENum(cAlias, cCampo)`, declare a regra na tabela do fixture: `"numera
 
 Defina `cenariosMvc` no `mock.jsonc` e selecione um cenario por nome:
 
+Atualmente, o campo `operacao` aceita apenas `"incluir"`. Outras operacoes sao rejeitadas com erro explicito.
+
 ```jsonc
 "cenariosMvc": [
   {

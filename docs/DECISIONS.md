@@ -477,3 +477,11 @@
 - **Contexto:** A abertura do README expunha fases de desenvolvimento, nomes do corpus e referencias a decisoes internas antes de explicar o produto atual.
 - **Decisao:** Substituir `Estado atual` por `Recursos principais`, descritos como comportamentos observaveis. Historico, fases, corpus e migracoes permanecem somente em `docs/`.
 - **Validacao:** Teste documental rejeita cabecalho `Estado atual`, marcadores `Fase N` e expressoes de marco interno na abertura publica.
+
+
+## ADR-062 — Operacoes suportadas comentadas em cenariosMvc
+
+- **Data:** 17/11/2026
+- **Contexto:** Os mocks gerados nao explicavam quais valores eram validos em `cenariosMvc[].operacao`, levando a expectativa de alteracao ou exclusao ainda nao implementadas.
+- **Decisao:** `--init` passa a gerar `cenariosMvc: []` e ambos os geradores adicionam o comentario `Operacoes suportadas no campo "operacao": "incluir"`. README e skill Monasteiro repetem o limite observavel.
+- **Validacao:** Testes verificam a secao e o comentario nos dois JSONC gerados, alem da orientacao na skill distribuida.

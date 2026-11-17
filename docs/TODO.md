@@ -7,6 +7,8 @@
 
 ## Foco atual
 
+- [x] Comentar `cenariosMvc` nos JSONC de `--init` e `--mvc1`, listando `"incluir"` como unica operacao atualmente suportada (17/11/2026).
+
 - [x] Remover fases e historico de implementacao da abertura do README, apresentando apenas recursos publicos atuais (17/11/2026).
 
 - [x] Versionar o mascote fornecido em `docs/assets` e usar a identidade visual no README principal (17/11/2026).

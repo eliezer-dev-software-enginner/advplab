@@ -80,6 +80,7 @@ advplab -run Fontes/@TABLE@MVC.prw --mvc-case incluir-registro
 
 A validacao deve indicar quatro funcoes. O browse inicial mostra a tabela vazia.
 O cenario `incluir-registro` espera `salvou=true, totalRegistros=1`.
+Em `cenariosMvc`, o campo `operacao` aceita atualmente apenas `incluir`.
 Sem `--persist`, os registros ficam apenas em memoria e o mock nao e alterado.
 
 Para executar uma funcao especifica de qualquer fonte do projeto, informe o caminho,
@@ -178,6 +179,7 @@ entrada usados como corpus do AdvPLab.
 - Declare no `mock.jsonc` todas as tabelas, campos e indices lidos pelo fonte.
 - Preserve as secoes `parametros`, `tabelas`, `funcoes`, `ambiente`, `dialogos`,
   `especificidadesPrw`, `consultas` e `cenariosMvc`, usando listas vazias quando necessario.
+- Em `cenariosMvc`, o campo `operacao` aceita atualmente apenas `incluir`; nao invente suporte a alteracao ou exclusao.
 - Para `DbSetOrder`, `DbSeek` ou `Posicione`, declare `indices` na mesma ordem da chave real.
 - Para funcoes externas sem integracao local, configure retornos deterministas em `funcoes`
   ou `especificidadesPrw`; nao invente acesso a servidor, SMTP ou banco.
@@ -373,7 +375,7 @@ def create_mvc1(table='ZA1', legendas=False):
         'dialogos': 'Respostas de dialogos simulados.',
         'especificidadesPrw': 'Configuracoes especificas por fonte PRW.',
         'consultas': 'Resultados simulados de consultas.',
-        'cenariosMvc': 'Inclusao simulada; nao cria tabela no Protheus.',
+        'cenariosMvc': 'Cenarios MVC. Operacoes suportadas no campo \"operacao\": \"incluir\".',
     }
     fixture_text = json.dumps(fixture, indent=2, ensure_ascii=False) + '\n'
     for key, comment in comments.items():

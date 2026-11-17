@@ -239,7 +239,7 @@ python -m unittest discover -s tests -v
 
 ## Estado atual
 
-- `cenariosMvc` em JSONC e `--mvc-case` permitem exercitar inclusao simples de `MPFormModel`, incluindo `bPost` e comparacao de `salvou`/`totalRegistros`, sem persistir no fixture. Os dois cenarios reais de `ZA1MVC.prw` foram executados: preco negativo rejeitado (1 registro) e valido aprovado (2 registros em memoria). Ver `fase-mvc-cenarios.md` e ADR-028.
+- `cenariosMvc` em JSONC aceita atualmente somente `operacao: "incluir"`; `--mvc-case` permite exercitar inclusao simples de `MPFormModel`, incluindo `bPost` e comparacao de `salvou`/`totalRegistros`, sem persistir no fixture. Os dois cenarios reais de `ZA1MVC.prw` foram executados: preco negativo rejeitado (1 registro) e valido aprovado (2 registros em memoria). Ver `fase-mvc-cenarios.md` e ADR-028.
 
 - Fases 0, 1 e 1b concluidas.
 - O `TRNSOL02.prw` e validado integralmente e executado pelo interpretador com fronteiras Protheus simuladas.

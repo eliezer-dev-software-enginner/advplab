@@ -44,7 +44,9 @@ INIT_FIXTURE = """{
   // Configuracoes especificas por fonte PRW.
   "especificidadesPrw": [],
   // Resultados simulados de consultas.
-  "consultas": []
+  "consultas": [],
+  // Cenarios MVC. Operacoes suportadas no campo "operacao": "incluir".
+  "cenariosMvc": []
 }
 """
 

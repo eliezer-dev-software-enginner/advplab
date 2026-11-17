@@ -22,9 +22,10 @@ class InitCliTests(unittest.TestCase):
                     self.assertEqual(0, main(['--init']))
                 path = Path('mock.jsonc')
                 self.assertIn('// Valores consultados por GetMV().', path.read_text())
+                self.assertIn('// Cenarios MVC. Operacoes suportadas no campo \"operacao\": \"incluir\".', path.read_text())
                 self.assertEqual({
                     'parametros', 'tabelas', 'funcoes', 'ambiente',
-                    'dialogos', 'especificidadesPrw', 'consultas',
+                    'dialogos', 'especificidadesPrw', 'consultas', 'cenariosMvc',
                 }, set(Fixture.read_data(path)))
                 fixture = Fixture.from_file(path)
                 self.assertEqual('Usuario Teste', fixture.get_function_result('FwGetUserName'))
