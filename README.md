@@ -73,32 +73,62 @@ Não são necessários AppServer, SmartClient, licença Protheus ou banco de dad
 
 ## Instalar a CLI
 
-Na pasta onde deseja guardar os projetos, copie e execute o bloco abaixo para baixar os dois repositórios como pastas irmãs e instalar o AdvPLab:
+Na pasta onde deseja guardar os projetos, baixe os dois repositórios como pastas irmãs:
 
-```powershell
+```bash
 git clone https://github.com/eliezer-dev-software-enginner/LivrePL.git livrePL
 git clone https://github.com/eliezer-dev-software-enginner/advpl-testlab.git advplab
-cd advplab
+```
+
+O nome do projeto, da pasta de destino e do comando é `advplab`. O endereço Git acima mantém o nome histórico do repositório remoto; o clone é salvo explicitamente em `advplab`. O destino `livrePL` mantém o nome esperado pelo runtime, inclusive em sistemas que diferenciam maiúsculas e minúsculas.
+
+### Linux: instalar com pipx
+
+Ubuntu e Debian recentes protegem o Python do sistema pela PEP 668. Instale aplicações Python com `pipx`; não use `sudo pip` nem `--break-system-packages`:
+
+```bash
+sudo apt update
+sudo apt install pipx
+pipx ensurepath
+```
+
+Abra um terminal novo e instale os dois comandos em modo editável:
+
+```bash
+cd livrePL
+pipx install --editable .
+cd ../advplab
+pipx install --editable .
+```
+
+Se os repositórios já estiverem baixados, execute somente os dois comandos `pipx install` nas respectivas pastas. Para atualizar uma instalação existente após alterar ou baixar código novo, use:
+
+```bash
+pipx install --force --editable .
+```
+
+### Windows
+
+No PowerShell, instale o pipx e abra um terminal novo depois de ajustar o PATH:
+
+```powershell
+py -m pip install --user pipx
+py -m pipx ensurepath
+```
+
+Depois, nas pastas `livrePL` e `advplab`, execute `pipx install --editable .` como no fluxo acima.
+
+### Alternativa para desenvolvimento com venv
+
+Se não quiser instalar um comando global, crie um ambiente virtual dentro do checkout:
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
 python -m pip install -e .
 ```
 
-O nome do projeto, da pasta de destino e do comando é `advplab`. O endereço Git acima mantém o nome histórico do repositório remoto; o clone é salvo explicitamente em `advplab`.
-
-O bloco funciona em Bash e PowerShell. No Linux, use `python3` no lugar de `python` se esse for o nome disponível no seu ambiente. O destino explícito `livrePL` no primeiro clone mantém o nome esperado pelo runtime, inclusive em sistemas que diferenciam maiúsculas e minúsculas.
-
-Se já baixou os dois repositórios como pastas irmãs, execute apenas `cd advplab` e `python -m pip install -e .`; não é necessário cloná-los novamente.
-
-Se a CLI ja estava instalada antes da adicao de `--persist`, rode esse comando novamente no mesmo ambiente Python para incluir o modulo de estado.
-
-O runtime localiza os módulos do LivrePL diretamente no diretório irmão `../livrePL`; a instalação editável deste pacote não instala nem obtém o LivrePL. Mantenha os dois repositórios nessa estrutura ao usar a CLI, inclusive depois da instalação.
-
-A instalação editável precisa ser feita apenas uma vez por ambiente Python. No Windows, se o `pip` avisar que a pasta `Scripts` do usuário não está no `PATH`, adicione a pasta indicada e abra um terminal novo. Para descobrir a base do usuário:
-
-```powershell
-python -m site --user-base
-```
-
-Normalmente o executável fica em uma subpasta como `Python314\Scripts` dentro dessa base.
+Nesse caso, o comando fica disponível somente enquanto o ambiente virtual estiver ativado. O runtime do AdvPLab localiza os módulos do LivrePL no diretório irmão `../livrePL`; mantenha os dois repositórios nessa estrutura.
 
 Depois, a partir do diretorio de qualquer fonte:
 
@@ -132,7 +162,7 @@ O comando cria `mock.jsonc` na pasta atual com comentarios e as sete secoes basi
 advplab -run rotina.prw
 ```
 
-Se `mock.jsonc` ja existir, `--init` informa o erro e preserva seu conteudo. O comando da CLI é `advplab`. Para atualizar uma instalacao existente, reinstale com `python -m pip install -e .` na pasta deste repositorio.
+Se `mock.jsonc` ja existir, `--init` informa o erro e preserva seu conteudo. O comando da CLI é `advplab`. Para atualizar uma instalacao existente, execute `pipx install --force --editable .` na pasta deste repositorio.
 
 ### Criar um projeto MVC tipo 1
 

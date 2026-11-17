@@ -100,7 +100,8 @@ def _load_livrepl():
         )
     source_text = str(source_path)
     if source_text not in sys.path:
-        sys.path.insert(0, source_text)
+        # Preserve os modulos do AdvPLab quando LivrePL tiver nomes iguais, como diagnostics.py.
+        sys.path.append(source_text)
 
 
 _load_livrepl()

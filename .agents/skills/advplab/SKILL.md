@@ -31,6 +31,8 @@ Antes de implementar, classifique a mudança:
 
 Compilação no RPO é uma integração real e opcional. Não a apresente como necessária para os testes headless e não use credenciais, tokens ou arquivos locais como dados versionados.
 
+Em Ubuntu e Debian com PEP 668, instale as CLIs com `pipx install --editable .`; não recomende `--break-system-packages`. Uma `venv` é a alternativa para desenvolvimento sem comando global.
+
 Quando a suite do checkout passar, mas o comando global continuar com comportamento antigo, verifique `command -v livrepl`, `command -v advplab` e o interpretador indicado no shebang. Para instalações pipx desatualizadas, reinstale o checkout correto com `pipx install --force --editable <caminho>` e repita o comando original no projeto alvo. Registre essa orientação também na skill `monasteiro` distribuída por `scaffold.py`.
 
 ## Documentação

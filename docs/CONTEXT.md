@@ -278,3 +278,7 @@ Sem --tds-config, -compile le ~/.totvsls/servers.json e usa tds_session.py para 
 ## Preview textual do browse (28/10/2026)
 
 --preview executa a entrada no simulador ate o primeiro browse e mostra titulo, acoes, colunas e ate 20 registros do mock no terminal. browse_preview.py renderiza; FixtureInterpreter captura e interrompe a execucao apos Activate. Sem persistencia ou cenario MVC. Nao reproduz ViewDef ou UI grafica; ver fase-preview-browse.md.
+
+## Instalacao sob PEP 668 (17/11/2026)
+
+No Linux, a instalacao publica usa pipx em modo editavel para isolar LivrePL e AdvPLab do Python gerenciado pelo sistema. `python -m pip install -e .` fica restrito a uma venv ativa. O README proibe `--break-system-packages` e documenta atualizacao com `pipx install --force --editable .`.

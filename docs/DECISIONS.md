@@ -451,3 +451,13 @@
 - **Decisao:** A skill Monasteiro gerada orienta a localizar `livrepl` e `advplab`, conferir o interpretador do script, reinstalar explicitamente o checkout correto em modo editavel quando necessario e repetir o comando original no diretorio do projeto.
 - **Limite:** A orientacao nao presume caminhos absolutos nem atualiza instalacoes automaticamente. O agente deve identificar a origem antes de modificar o ambiente do usuario.
 - **Validacao:** O teste do scaffold exige que a skill gerada contenha os comandos de diagnostico, reinstalacao pipx e repeticao do caso real.
+
+
+## ADR-059 — Instalacao isolada com pipx sob PEP 668
+
+- **Data:** 17/11/2026
+- **Contexto:** Ubuntu e Debian recentes rejeitam `python -m pip install -e .` fora de ambiente virtual com `externally-managed-environment`.
+- **Decisao:** A instalacao publica de LivrePL e AdvPLab usa `pipx install --editable .`; atualizacoes usam `pipx install --force --editable .`. `python -m pip install -e .` permanece somente dentro de uma venv ativa.
+- **Seguranca:** Nao recomendar `sudo pip` nem `--break-system-packages`, evitando alterar o Python gerenciado pelo sistema operacional.
+- **Validacao:** Teste documental exige pipx, a orientacao PEP 668 e a ausencia do comando pip editavel fora da secao de venv.
+- **Correcao de integracao:** O caminho irmao do LivrePL e acrescentado ao fim de `sys.path`, preservando modulos homonimos do AdvPLab, como `diagnostics.py`; teste dedicado verifica a origem dos imports.
