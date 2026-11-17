@@ -469,3 +469,11 @@
 - **Contexto:** O usuario forneceu uma imagem para identificar visualmente o AdvPLab. O anexo original estava fora do repositorio e nao seria renderizado por leitores do GitHub.
 - **Decisao:** Copiar o PNG sem alteracao para `docs/assets/advplab-mascot.png` e referencia-lo no topo do README com texto alternativo e largura de 320 pixels.
 - **Validacao:** Conferir assinatura PNG, dimensoes, igualdade SHA-256 com o arquivo fornecido e existencia do caminho relativo usado pelo README.
+
+
+## ADR-061 — Abertura publica do README sem fases internas
+
+- **Data:** 17/11/2026
+- **Contexto:** A abertura do README expunha fases de desenvolvimento, nomes do corpus e referencias a decisoes internas antes de explicar o produto atual.
+- **Decisao:** Substituir `Estado atual` por `Recursos principais`, descritos como comportamentos observaveis. Historico, fases, corpus e migracoes permanecem somente em `docs/`.
+- **Validacao:** Teste documental rejeita cabecalho `Estado atual`, marcadores `Fase N` e expressoes de marco interno na abertura publica.

@@ -6,26 +6,18 @@
 
 Ambiente de simulacao e testes para executar arquivos AdvPL reais com dados de fixtures JSON ou JSONC, sem AppServer, licenca ou banco de dados.
 
-O projeto e separado do `livrePL`. Ele usa o interpretador como dependencia local e acrescenta builtins do framework Protheus por heranca, sem alterar o lexer, o parser ou o interpretador original.
+O AdvPLab usa o LivrePL como base da linguagem e acrescenta simulacoes locais de APIs e comportamentos do Protheus. Os testes headless nao exigem AppServer, SmartClient, licenca ou banco de dados.
 
-Os utilitarios gerais de texto, arrays, datas e erros agora pertencem ao LivrePL. O AdvPLab conserva overrides do relogio e dos arquivos para os fixtures: `Date()` e campos `D` sao datas tipadas em memoria, enquanto JSON/JSONC e `state.json` usam `AAAA-MM-DD` ou vazio/null. Consulte a ADR-044.
+## Recursos principais
 
-## Estado atual
-
-- Fase 0: levantamento e arquitetura documentados.
-- Fase 1: `GetMV(cParam)` lendo `parametros` do fixture JSON.
-- Fase 1b: casos reais `U_SolMailCfg()` e `TextoHtml()` extraidos do desafio1.
-- Nomes de parametros sao case-insensitive.
-- Parametro ausente gera erro explicito.
-- `GetMV(cParam, lHelp, uDefault)` devolve o default quando a chave nao existe.
-- Builtins adicionais usados pelos casos reais: `StrTran` e `Chr`.
-- `parametros` e `tabelas` usam listas de objetos no formato canonico.
-- Cada tabela possui `campos` opcionais e `registros`.
-- CLI instalavel `advplab -run arquivo.prw` com descoberta automatica da primeira `User Function` e do fixture.
-- Compilacao real opcional no RPO via `advplab -compile arquivo.prw`, usando o Language Server oficial e a sessao salva pelo VS Code (ou TDS-CLI com INI opcional) e descoberta recursiva de `//usePrw`.
-- Validacao semantica rejeita variaveis nao declaradas e funcoes inexistentes antes da execucao.
-- Primeiro fonte real executado pelo parser e interpretador completos: `TRNSOL02.prw`, incluindo diálogo headless, statement, alias, browse e exportação virtual.
-- `FWMBrowse:SetFields` acrescenta colunas calculadas por code blocks a exibicao textual, avaliadas por registro; mascaras e visibilidade SX3 nao sao simuladas.
+- Executa e valida fontes `.prw` pelo terminal, com selecao da `User Function` de entrada.
+- Descobre `mock.jsonc` no projeto e permite informar outro fixture com `--fixture`.
+- Simula parametros, tabelas, funcoes, ambiente, dialogos e consultas com dados deterministas.
+- Valida identificadores, chamadas, dependencias `//usePrw`, metadados MVC e campos declarados.
+- Gera projetos MVC tipo 1 com fonte, mock, README, `.gitignore` e skill Monasteiro.
+- Mostra uma pre-visualizacao textual de browses e colunas calculadas.
+- Executa cenarios MVC locais e pode persistir registros em `state.json` quando solicitado.
+- Recompila fontes no RPO de forma opcional usando a sessao Protheus conectada no VS Code.
 
 ## Estrutura
 

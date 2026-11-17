@@ -7,6 +7,8 @@
 
 ## Foco atual
 
+- [x] Remover fases e historico de implementacao da abertura do README, apresentando apenas recursos publicos atuais (17/11/2026).
+
 - [x] Versionar o mascote fornecido em `docs/assets` e usar a identidade visual no README principal (17/11/2026).
 
 - [x] Substituir a instalacao global via pip por pipx, documentar PEP 668, atualizacao editavel e alternativa com venv (17/11/2026).
