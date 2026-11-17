@@ -461,3 +461,11 @@
 - **Seguranca:** Nao recomendar `sudo pip` nem `--break-system-packages`, evitando alterar o Python gerenciado pelo sistema operacional.
 - **Validacao:** Teste documental exige pipx, a orientacao PEP 668 e a ausencia do comando pip editavel fora da secao de venv.
 - **Correcao de integracao:** O caminho irmao do LivrePL e acrescentado ao fim de `sys.path`, preservando modulos homonimos do AdvPLab, como `diagnostics.py`; teste dedicado verifica a origem dos imports.
+
+
+## ADR-060 — Mascote versionado no README
+
+- **Data:** 17/11/2026
+- **Contexto:** O usuario forneceu uma imagem para identificar visualmente o AdvPLab. O anexo original estava fora do repositorio e nao seria renderizado por leitores do GitHub.
+- **Decisao:** Copiar o PNG sem alteracao para `docs/assets/advplab-mascot.png` e referencia-lo no topo do README com texto alternativo e largura de 320 pixels.
+- **Validacao:** Conferir assinatura PNG, dimensoes, igualdade SHA-256 com o arquivo fornecido e existencia do caminho relativo usado pelo README.

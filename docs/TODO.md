@@ -7,6 +7,8 @@
 
 ## Foco atual
 
+- [x] Versionar o mascote fornecido em `docs/assets` e usar a identidade visual no README principal (17/11/2026).
+
 - [x] Substituir a instalacao global via pip por pipx, documentar PEP 668, atualizacao editavel e alternativa com venv (17/11/2026).
 
 - [x] Documentar no README gerado por `--mvc1` a execucao de funcao posicional com `--arg` e a alternativa tipada `--args-json` (06/11/2026).

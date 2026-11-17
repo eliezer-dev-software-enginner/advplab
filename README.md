@@ -1,5 +1,9 @@
 # AdvPLab
 
+<p align="center">
+  <img src="docs/assets/advplab-mascot.png" alt="Mascote do AdvPLab com uma chave de fenda" width="320">
+</p>
+
 Ambiente de simulacao e testes para executar arquivos AdvPL reais com dados de fixtures JSON ou JSONC, sem AppServer, licenca ou banco de dados.
 
 O projeto e separado do `livrePL`. Ele usa o interpretador como dependencia local e acrescenta builtins do framework Protheus por heranca, sem alterar o lexer, o parser ou o interpretador original.
